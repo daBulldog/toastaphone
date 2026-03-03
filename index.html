@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Location Survey</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #f0ede8;
+    --card: #ffffff;
+    --accent: #2d5a8e;
+    --accent2: #e8734a;
+    --soft: #dde8f5;
+    --text: #1a1a2e;
+    --muted: #8a8fa8;
+    --radius: 20px;
+    --track: #d8e4f0;
+    --saved: #4caf7d;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+    gap: 20px;
+  }
+
+  /* Subtle background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(45,90,142,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(232,115,74,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  header {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  .time-badge {
+    background: var(--accent);
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 100px;
+    letter-spacing: 0.05em;
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 28px 28px;
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    box-shadow: 0 4px 24px rgba(45,90,142,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .card:nth-child(2) { animation-delay: 0.05s; }
+  .card:nth-child(3) { animation-delay: 0.10s; }
+  .card:nth-child(4) { animation-delay: 0.15s; }
+  .card:nth-child(5) { animation-delay: 0.20s; }
+
+  .slider-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .slider-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .slider-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .icon {
+    font-size: 1.3rem;
+    width: 36px;
+    height: 36px;
+    background: var(--soft);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .save-btn {
+    padding: 6px 16px;
+    border-radius: 100px;
+    border: none;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .save-btn.unsaved {
+    background: #fde8e0;
+    color: var(--accent2);
+  }
+
+  .save-btn.unsaved:hover {
+    background: var(--accent2);
+    color: white;
+    transform: scale(1.05);
+  }
+
+  .save-btn.saved {
+    background: #e0f5ea;
+    color: var(--saved);
+  }
+
+  /* Slider track */
+  .slider-track-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .end-icon {
+    font-size: 1.1rem;
+    opacity: 0.35;
+    flex-shrink: 0;
+    width: 22px;
+    text-align: center;
+  }
+
+  .end-icon.active { opacity: 1; }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1;
+    height: 10px;
+    border-radius: 100px;
+    background: var(--track);
+    outline: none;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 2px 8px rgba(45,90,142,0.35);
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    border: 3px solid white;
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+    box-shadow: 0 4px 14px rgba(45,90,142,0.45);
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 2px 8px rgba(45,90,142,0.35);
+    cursor: pointer;
+    border: 3px solid white;
+  }
+
+  .value-pill {
+    min-width: 44px;
+    text-align: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--accent);
+    background: var(--soft);
+    padding: 4px 10px;
+    border-radius: 100px;
+  }
+
+  /* Submit card */
+  .submit-card {
+    background: var(--accent);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    box-shadow: 0 8px 32px rgba(45,90,142,0.25);
+    animation: fadeUp 0.5s 0.25s ease both;
+  }
+
+  .submit-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .submit-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    color: white;
+  }
+
+  .submit-sub {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .submit-btn {
+    background: white;
+    color: var(--accent);
+    border: none;
+    border-radius: 12px;
+    padding: 12px 28px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .submit-btn:hover {
+    transform: scale(1.04);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--text);
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 100px;
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="title">Location Survey</div>
+  <div class="time-badge" id="timeBadge">--:-- --</div>
+</header>
+
+<!-- Temperature -->
+<div class="card" style="animation-delay:0.05s">
+  <div class="slider-row">
+    <div class="slider-header">
+      <div class="slider-label">
+        <div class="icon">🌡️</div>
+        Temperature
+      </div>
+      <button class="save-btn unsaved" data-key="temperature" onclick="saveSlider(this)">Save</button>
+    </div>
+    <div class="slider-track-wrap">
+      <span class="end-icon" id="temp-left">🥶</span>
+      <input type="range" min="0" max="100" value="50" id="temperature" oninput="updateSlider(this)">
+      <span class="end-icon" id="temp-right">🥵</span>
+      <span class="value-pill" id="temperature-val">50</span>
+    </div>
+  </div>
+</div>
+
+<!-- Busyness -->
+<div class="card" style="animation-delay:0.10s">
+  <div class="slider-row">
+    <div class="slider-header">
+      <div class="slider-label">
+        <div class="icon">👥</div>
+        Busyness
+      </div>
+      <button class="save-btn unsaved" data-key="busyness" onclick="saveSlider(this)">Save</button>
+    </div>
+    <div class="slider-track-wrap">
+      <span class="end-icon" id="busy-left">🏜️</span>
+      <input type="range" min="0" max="100" value="50" id="busyness" oninput="updateSlider(this)">
+      <span class="end-icon" id="busy-right">🫙</span>
+      <span class="value-pill" id="busyness-val">50</span>
+    </div>
+  </div>
+</div>
+
+<!-- Smell -->
+<div class="card" style="animation-delay:0.15s">
+  <div class="slider-row">
+    <div class="slider-header">
+      <div class="slider-label">
+        <div class="icon">👃</div>
+        Smell
+      </div>
+      <button class="save-btn unsaved" data-key="smell" onclick="saveSlider(this)">Save</button>
+    </div>
+    <div class="slider-track-wrap">
+      <span class="end-icon" id="smell-left">🌸</span>
+      <input type="range" min="0" max="100" value="50" id="smell" oninput="updateSlider(this)">
+      <span class="end-icon" id="smell-right">🗑️</span>
+      <span class="value-pill" id="smell-val">50</span>
+    </div>
+  </div>
+</div>
+
+<!-- Coziness -->
+<div class="card" style="animation-delay:0.20s">
+  <div class="slider-row">
+    <div class="slider-header">
+      <div class="slider-label">
+        <div class="icon">🛋️</div>
+        Coziness
+      </div>
+      <button class="save-btn unsaved" data-key="coziness" onclick="saveSlider(this)">Save</button>
+    </div>
+    <div class="slider-track-wrap">
+      <span class="end-icon" id="cozy-left">🪨</span>
+      <input type="range" min="0" max="100" value="50" id="coziness" oninput="updateSlider(this)">
+      <span class="end-icon" id="cozy-right">☕</span>
+      <span class="value-pill" id="coziness-val">50</span>
+    </div>
+  </div>
+</div>
+
+<!-- Submit -->
+<div class="submit-card">
+  <div class="submit-info">
+    <div class="submit-title">Ready to submit?</div>
+    <div class="submit-sub" id="savedCount">0 of 4 saved</div>
+  </div>
+  <button class="submit-btn" onclick="submitAll()">Submit Survey →</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // Clock
+  function updateTime() {
+    const now = new Date();
+    let h = now.getHours(), m = now.getMinutes();
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+    document.getElementById('timeBadge').textContent =
+      `${h}:${String(m).padStart(2,'0')} ${ampm}`;
+  }
+  updateTime();
+  setInterval(updateTime, 1000);
+
+  // State
+  const saved = {};
+
+  function updateSlider(input) {
+    const val = input.value;
+    document.getElementById(input.id + '-val').textContent = val;
+
+    // Update track fill color
+    const pct = val + '%';
+    input.style.background = `linear-gradient(to right, #2d5a8e ${pct}, #d8e4f0 ${pct})`;
+
+    // Mark unsaved again if changed
+    const btn = document.querySelector(`[data-key="${input.id}"]`);
+    if (btn && btn.classList.contains('saved')) {
+      btn.classList.remove('saved');
+      btn.classList.add('unsaved');
+      btn.textContent = 'Save';
+      delete saved[input.id];
+      updateCount();
+    }
+  }
+
+  function saveSlider(btn) {
+    const key = btn.dataset.key;
+    const val = document.getElementById(key).value;
+    saved[key] = val;
+    btn.classList.remove('unsaved');
+    btn.classList.add('saved');
+    btn.textContent = '✓';
+    updateCount();
+    showToast(`${capitalize(key)} saved: ${val}`);
+  }
+
+  function updateCount() {
+    const n = Object.keys(saved).length;
+    document.getElementById('savedCount').textContent = `${n} of 4 saved`;
+  }
+
+  function submitAll() {
+    const keys = ['temperature','busyness','smell','coziness'];
+    // Auto-save any unsaved sliders
+    keys.forEach(k => {
+      if (!saved[k]) {
+        saved[k] = document.getElementById(k).value;
+        const btn = document.querySelector(`[data-key="${k}"]`);
+        btn.classList.remove('unsaved');
+        btn.classList.add('saved');
+        btn.textContent = '✓';
+      }
+    });
+    updateCount();
+
+    const summary = keys.map(k => `${capitalize(k)}: ${saved[k]}`).join(' · ');
+    showToast('Submitted! ' + summary, 3500);
+  }
+
+  function showToast(msg, dur = 2000) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), dur);
+  }
+
+  function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  // Init slider fills
+  document.querySelectorAll('input[type="range"]').forEach(updateSlider);
+</script>
+</body>
+</html>
