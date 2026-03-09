@@ -4,740 +4,941 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>StudySpot</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Serif+Display:ital@0;1&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
 <style>
-:root {
-  --paper:   #F7F3EC;
-  --paper2:  #EFE9DC;
-  --linen:   #E8E0CE;
-  --sage:    #8FA68A;
-  --sage-dk: #5E7A5A;
-  --sage-lt: #C8D9C4;
-  --sage-bg: #EDF2EB;
-  --rose:    #C9877A;
-  --rose-lt: #EDD9D4;
-  --rose-bg: #F6EDEA;
-  --flax:    #C4A46B;
-  --flax-lt: #EDE0C4;
-  --sky:     #7FA8BC;
-  --sky-lt:  #D4E4EE;
-  --sky-bg:  #EBF2F7;
-  --ink:     #2E2A22;
-  --ink-mid: #5C5247;
-  --ink-soft:#9A8E7E;
-  --rule:    #D8D0BF;
-  --r: 10px; --rsm: 6px; --rlg: 16px;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{
-  font-family:'Jost',sans-serif;background:var(--paper);color:var(--ink);
-  min-height:100vh;font-size:14px;line-height:1.5;
-  background-image:
-    repeating-linear-gradient(0deg,transparent,transparent 24px,rgba(180,165,140,.04) 24px,rgba(180,165,140,.04) 25px),
-    repeating-linear-gradient(90deg,transparent,transparent 24px,rgba(180,165,140,.04) 24px,rgba(180,165,140,.04) 25px);
-}
-/* HEADER */
-.header{background:var(--paper2);border-bottom:1.5px solid var(--rule);position:sticky;top:0;z-index:200}
-.header-in{max-width:1180px;margin:0 auto;padding:0 28px;display:flex;align-items:stretch;height:56px}
-.brand{display:flex;align-items:center;gap:10px;padding-right:28px;border-right:1.5px solid var(--rule)}
-.brand-name{font-family:'DM Serif Display',serif;font-size:1.45rem;color:var(--ink)}
-.brand-dot{color:var(--rose)}
-.brand-tag{font-size:.58rem;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink-soft);border:1px solid var(--rule);border-radius:3px;padding:2px 6px}
-.nav{display:flex;align-items:flex-end;gap:2px;padding:0 18px;flex:1}
-.nav-tab{display:flex;align-items:center;gap:6px;padding:0 16px;height:38px;font-family:'Jost',sans-serif;font-size:.69rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft);border:1.5px solid transparent;border-bottom:none;border-radius:6px 6px 0 0;cursor:pointer;background:transparent;transition:all .18s;align-self:flex-end}
-.nav-tab:hover{color:var(--ink);background:rgba(255,255,255,.4)}
-.nav-tab.active{background:var(--paper);border-color:var(--rule);color:var(--ink);margin-bottom:-1.5px;height:42px}
-.header-right{display:flex;align-items:center;gap:14px;padding-left:22px;border-left:1.5px solid var(--rule)}
-.streak{display:flex;align-items:center;gap:5px;font-size:.68rem;font-weight:500;color:#86632A;background:var(--flax-lt);border:1px solid #D4B87A;border-radius:20px;padding:3px 10px}
-.xp-w{display:flex;flex-direction:column;gap:2px;min-width:72px}
-.xp-l{font-size:.56rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft)}
-.xp-bar{height:5px;background:var(--linen);border-radius:3px;overflow:hidden}
-.xp-fill{height:100%;background:linear-gradient(90deg,var(--sage),var(--sage-dk));width:62%;border-radius:3px}
-/* LAYOUT */
-.app{max-width:1180px;margin:0 auto;padding:26px 28px 48px}
-.page{display:none}
-.page.active{display:block;animation:fadeIn .28s ease both}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-/* CARD */
-.card{background:white;border:1.5px solid var(--rule);border-radius:var(--r);padding:20px;position:relative}
-.card::after{content:'';position:absolute;inset:4px;border:1px solid rgba(216,208,191,.3);border-radius:calc(var(--r) - 3px);pointer-events:none}
-.ch{display:flex;align-items:baseline;gap:8px;margin-bottom:16px}
-.ct{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--ink)}
-.cs{font-size:.63rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft)}
-/* CHIP */
-.chip{display:inline-flex;align-items:center;gap:4px;border-radius:20px;padding:3px 10px;font-size:.62rem;font-weight:500;letter-spacing:.8px;text-transform:uppercase;border:1px solid;font-family:'Jost',sans-serif}
-.c-sage{background:var(--sage-bg);border-color:var(--sage-lt);color:var(--sage-dk)}
-.c-rose{background:var(--rose-bg);border-color:#D8AEA6;color:var(--rose)}
-.c-flax{background:var(--flax-lt);border-color:#D4B87A;color:#86632A}
-.c-sky{background:var(--sky-bg);border-color:var(--sky-lt);color:#3A6A80}
-.c-ink{background:var(--paper2);border-color:var(--rule);color:var(--ink-mid)}
-/* BTN */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:var(--rsm);border:1.5px solid;padding:7px 16px;font-family:'Jost',sans-serif;font-size:.68rem;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;cursor:pointer;transition:all .15s}
-.b-sage{background:var(--sage);border-color:var(--sage-dk);color:white}
-.b-sage:hover{background:var(--sage-dk)}
-.b-ghost{background:transparent;border-color:var(--rule);color:var(--ink-mid)}
-.b-ghost:hover{border-color:var(--ink-soft);color:var(--ink)}
-.b-sm{padding:4px 11px;font-size:.61rem}
-/* SEC TITLE */
-.sec-t{font-family:'Cormorant Garamond',serif;font-size:.7rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--ink-soft);display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.sec-t::after{content:'';flex:1;height:1px;background:var(--rule)}
-/* MAP */
-.map-grid{display:grid;grid-template-columns:1fr 284px;gap:18px}
-.col-l,.col-r{display:flex;flex-direction:column;gap:14px}
-.room-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
-.rtab{font-family:'Jost',sans-serif;font-size:.64rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;border:1.5px solid var(--rule);border-radius:var(--rsm);padding:7px 14px;cursor:pointer;background:white;color:var(--ink-soft);transition:all .16s;display:flex;align-items:center;gap:6px}
-.rtab .sw{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.rtab:hover{color:var(--ink);border-color:var(--ink-soft)}
-.rtab.active{background:var(--ink);border-color:var(--ink);color:white}
-.fp-wrap{background:var(--sky-bg);border:1.5px solid var(--sky-lt);border-radius:var(--r);padding:12px}
-#fp-svg{width:100%;height:auto;display:block}
-.seat{cursor:pointer;transition:opacity .15s}
-.seat:hover{opacity:.7}
-.fp-leg{display:flex;gap:16px;margin-top:10px;flex-wrap:wrap}
-.fp-li{display:flex;align-items:center;gap:5px;font-size:.61rem;font-weight:500;letter-spacing:.8px;text-transform:uppercase;color:var(--ink-soft)}
-.fp-d{width:10px;height:10px;border-radius:50%}
-.occ-row{display:flex;gap:10px}
-.occ-c{flex:1;background:var(--paper);border:1px solid var(--rule);border-radius:var(--rsm);padding:12px 10px;text-align:center}
-.occ-n{font-family:'DM Serif Display',serif;font-size:1.9rem;line-height:1}
-.occ-l{font-size:.57rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft);margin-top:4px}
-.chart-tabs{display:flex;border:1px solid var(--rule);border-radius:var(--rsm);overflow:hidden;width:fit-content;margin-bottom:12px}
-.ctab{font-size:.61rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:5px 13px;cursor:pointer;background:white;color:var(--ink-soft);border:none;border-right:1px solid var(--rule);font-family:'Jost',sans-serif;transition:all .14s}
-.ctab:last-child{border-right:none}
-.ctab.active{background:var(--ink);color:white}
-.bc{display:flex;align-items:flex-end;gap:4px;height:78px;margin-bottom:5px}
-.bc-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
-.bc-bar{width:100%;border-radius:3px 3px 0 0;min-height:3px;transition:height .5s cubic-bezier(.25,.8,.25,1);cursor:pointer;border:1px solid rgba(0,0,0,.07)}
-.bc-bar:hover{filter:brightness(.86)}
-.bc-bar.now{outline:1.5px solid var(--ink);outline-offset:2px}
-.bc-l{font-size:.54rem;color:var(--ink-soft);margin-top:4px;letter-spacing:.3px}
-.nav-r{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.nav-r span{font-size:.67rem;font-weight:500;color:var(--ink-soft);letter-spacing:.5px;flex:1;text-align:center}
-.am-list{display:flex;flex-wrap:wrap;gap:5px}
-.am{font-size:.61rem;font-weight:500;letter-spacing:.5px;border:1px solid;border-radius:4px;padding:3px 9px;font-family:'Jost',sans-serif}
-.am-y{background:var(--sage-bg);border-color:var(--sage-lt);color:var(--sage-dk)}
-.am-n{background:var(--rose-bg);border-color:#D8AEA6;color:var(--rose);text-decoration:line-through;opacity:.7}
-.vibe-i{display:flex;align-items:center;gap:10px;margin-bottom:9px}
-.vibe-n{font-size:.61rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--ink-soft);width:66px;flex-shrink:0}
-.vibe-t{flex:1;height:8px;background:var(--paper2);border-radius:20px;overflow:hidden;border:1px solid var(--linen)}
-.vibe-f{height:100%;border-radius:20px;transition:width .6s cubic-bezier(.25,.8,.25,1)}
-.vibe-p{font-size:.61rem;font-weight:500;color:var(--ink);width:28px;text-align:right}
-/* LOG */
-.log-grid{display:grid;grid-template-columns:1fr 252px;gap:18px}
-.obs{background:var(--paper2);border:1.5px solid var(--rule);border-radius:var(--r);padding:16px 20px;display:flex;align-items:center;justify-content:space-between}
-.obs-t{font-family:'DM Serif Display',serif;font-size:2.6rem;line-height:1}
-.obs-m{font-size:.61rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft);margin-top:4px}
-.obs-r{text-align:right}
-.obs-loc{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic}
-.obs-room{font-size:.61rem;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink-soft);margin-top:3px}
-.sl-c{background:white;border:1.5px solid var(--rule);border-radius:var(--r);padding:16px 18px;transition:border-color .18s}
-.sl-c.logged{border-color:var(--sage)}
-.sl-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.sl-name{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:7px}
-.sl-tr{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.sl-mn,.sl-mx{font-size:.57rem;font-weight:500;letter-spacing:.8px;text-transform:uppercase;color:var(--ink-soft);width:40px}
-.sl-mx{text-align:right}
-input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:7px;border-radius:20px;outline:none;cursor:pointer;border:1px solid rgba(0,0,0,.07);transition:background .2s}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:white;border-radius:50%;border:2px solid var(--sage);box-shadow:0 1px 4px rgba(0,0,0,.12);transition:transform .1s;cursor:grab}
-input[type=range]::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.2)}
-.sl-ft{display:flex;align-items:center;justify-content:space-between}
-.sl-hint{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.82rem;color:var(--ink-soft)}
-.log-btn{font-size:.61rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;border-radius:var(--rsm);border:1.5px solid;padding:5px 13px;cursor:pointer;font-family:'Jost',sans-serif;transition:all .15s}
-.lp{background:transparent;border-color:var(--rule);color:var(--ink-soft)}
-.lp:hover{border-color:var(--sage);color:var(--sage-dk)}
-.ls{background:var(--sage-bg);border-color:var(--sage-lt);color:var(--sage-dk);cursor:default}
-/* TIMER */
-.timer-c{background:var(--ink);border-radius:var(--rlg);border:2px solid rgba(0,0,0,.4);padding:22px 18px 18px;text-align:center;position:relative;overflow:hidden}
-.timer-c::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(30deg,transparent,transparent 8px,rgba(255,255,255,.012) 8px,rgba(255,255,255,.012) 9px);pointer-events:none}
-.mode-sel{display:flex;background:rgba(255,255,255,.06);border-radius:20px;padding:3px;margin-bottom:16px;border:1px solid rgba(255,255,255,.07)}
-.mo{flex:1;border-radius:18px;border:none;background:transparent;color:rgba(255,255,255,.35);font-family:'Jost',sans-serif;font-size:.59rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:5px 3px;cursor:pointer;transition:all .18s}
-.mo.active{background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
-.rw{position:relative;width:136px;height:136px;margin:0 auto 16px}
-.rw svg{display:block;transform:rotate(-90deg)}
-.rc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.rc-mode{font-size:.55rem;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:3px}
-.rc-time{font-family:'DM Serif Display',serif;font-size:1.35rem;color:white;line-height:1}
-.rc-sub{font-size:.52rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.25);margin-top:4px}
-.t-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px}
-.ts{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06);border-radius:var(--rsm);padding:8px 6px;text-align:center}
-.ts .tl{font-size:.52rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3)}
-.ts .tv{font-family:'DM Serif Display',serif;font-size:1.05rem;color:white;margin-top:2px}
-.t-btns{display:flex;gap:7px;margin-bottom:12px}
-.t-btn{flex:1;border-radius:var(--rsm);border:1px solid;padding:9px 6px;font-family:'Jost',sans-serif;font-size:.65rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .14s}
-.t-play{background:var(--sage);border-color:var(--sage-dk);color:white}
-.t-play:hover{background:var(--sage-dk)}
-.t-reset{background:transparent;border-color:rgba(255,255,255,.12);color:rgba(255,255,255,.4)}
-.t-reset:hover{color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.25)}
-.t-gr{display:flex;align-items:center;justify-content:center;gap:8px}
-.t-gr label{font-size:.57rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.3)}
-.t-gi{width:52px;padding:5px;text-align:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:var(--rsm);color:white;font-family:'DM Serif Display',serif;font-size:.9rem}
-.t-gi:focus{outline:none;border-color:var(--sage)}
-.note-ta{width:100%;min-height:86px;resize:vertical;background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--rsm);padding:10px 12px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:var(--ink);line-height:1.7;background-image:repeating-linear-gradient(transparent,transparent 27px,var(--linen) 27px,var(--linen) 28px);background-position:0 28px}
-.note-ta:focus{outline:none;border-color:var(--sage)}
-.note-ta::placeholder{color:var(--ink-soft);font-style:italic}
-/* STATS */
-.stats-grid{display:grid;grid-template-columns:1fr 248px;gap:18px}
-.hero-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:4px}
-.tin{border:1.5px solid;border-radius:var(--r);padding:16px 12px;text-align:center;cursor:default;transition:transform .18s;position:relative;overflow:hidden}
-.tin::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:currentColor;opacity:.2}
-.tin:hover{transform:translateY(-2px)}
-.t-sky{background:var(--sky-bg);border-color:var(--sky-lt);color:#3A6A80}
-.t-sage{background:var(--sage-bg);border-color:var(--sage-lt);color:var(--sage-dk)}
-.t-rose{background:var(--rose-bg);border-color:#D8AEA6;color:var(--rose)}
-.t-flax{background:var(--flax-lt);border-color:#D4B87A;color:#86632A}
-.tin-i{font-size:1.3rem;margin-bottom:6px;display:block}
-.tin-n{font-family:'DM Serif Display',serif;font-size:2rem;line-height:1;color:var(--ink)}
-.tin-l{font-size:.57rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft);margin-top:5px}
-.hm-out{overflow-x:auto;padding-bottom:4px}
-.hm-m{display:flex;min-width:520px;padding-left:2px;margin-bottom:4px}
-.hm-ml{font-size:.55rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--ink-soft);flex-shrink:0}
-.hm-g{display:grid;grid-template-rows:repeat(7,12px);grid-auto-flow:column;gap:3px;min-width:520px}
-.hm-c{width:12px;height:12px;border-radius:2px;cursor:pointer;transition:transform .1s;border:1px solid rgba(0,0,0,.05)}
-.hm-c:hover{transform:scale(1.5);outline:1.5px solid var(--ink);outline-offset:1px}
-.h0{background:var(--linen)}.h1{background:#C4D9C0}.h2{background:#9DC29A}.h3{background:var(--sage)}.h4{background:var(--sage-dk)}
-.hm-leg{display:flex;align-items:center;gap:4px;margin-top:7px;justify-content:flex-end;min-width:520px}
-.hm-leg span{font-size:.55rem;font-weight:500;letter-spacing:.5px;color:var(--ink-soft)}
-.hm-sw{width:12px;height:12px;border-radius:2px;border:1px solid rgba(0,0,0,.07)}
-.wk-bs{display:flex;align-items:flex-end;gap:8px;height:100px}
-.wk-col{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end}
-.wk-bar{width:100%;border-radius:3px 3px 0 0;min-height:3px;cursor:pointer;border:1px solid rgba(0,0,0,.06);transition:all .2s}
-.wk-bar:hover{filter:brightness(.85)}
-.wk-bar.today{outline:1.5px solid var(--ink);outline-offset:2px}
-.wk-d{font-size:.54rem;font-weight:500;letter-spacing:.5px;text-transform:uppercase;color:var(--ink-soft);margin-top:5px}
-.wk-h{font-size:.59rem;font-weight:500;color:var(--ink);margin-top:1px}
-.avg3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
-.avg-b{background:var(--paper);border:1px solid var(--rule);border-radius:var(--rsm);padding:10px 8px;text-align:center}
-.avg-n{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--ink)}
-.avg-l{font-size:.55rem;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink-soft);margin-top:3px}
-.spot{display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--rsm);border:1px solid transparent;cursor:pointer;transition:all .16s;margin-bottom:4px}
-.spot:hover{background:var(--paper);border-color:var(--rule)}
-.spot-rk{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--ink-soft);min-width:20px}
-.spot-ic{font-size:1.1rem}
-.spot-in{flex:1}
-.spot-nm{font-family:'Cormorant Garamond',serif;font-size:.92rem;font-weight:600}
-.spot-sb{font-size:.57rem;font-weight:500;letter-spacing:.5px;text-transform:uppercase;color:var(--ink-soft)}
-.spot-bw{height:3px;background:var(--linen);border-radius:2px;margin-top:4px}
-.spot-bf{height:100%;border-radius:2px;transition:width .7s ease}
-.spot-h{font-family:'DM Serif Display',serif;font-size:.95rem;color:var(--sage-dk)}
-.goal-c{background:var(--paper2);border:1.5px solid var(--rule);border-radius:var(--r);padding:18px}
-.gr-wrap{display:flex;align-items:center;gap:14px;margin-top:10px}
-.gr{position:relative;width:72px;height:72px;flex-shrink:0}
-.gr svg{transform:rotate(-90deg)}
-.gr-cen{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-.gr-pct{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--ink)}
-.gd-n{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600}
-.gd-l{font-size:.57rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--ink-soft);margin-top:2px}
-.gd-r{font-size:.68rem;color:var(--flax);margin-top:6px;font-style:italic;font-family:'Cormorant Garamond',serif}
-.g-track{height:7px;background:var(--linen);border-radius:20px;margin:12px 0 5px;overflow:hidden;border:1px solid var(--rule)}
-.g-fill{height:100%;background:linear-gradient(90deg,var(--flax),#D4A840);border-radius:20px;width:62%;transition:width 1.2s ease}
-.g-nums{display:flex;justify-content:space-between;font-size:.57rem;font-weight:500;color:var(--ink-soft)}
-.lb-row{display:flex;align-items:center;gap:9px;padding:8px;border-radius:var(--rsm);border:1px solid transparent;cursor:pointer;transition:all .15s;margin-bottom:4px}
-.lb-row:hover{background:var(--paper);border-color:var(--rule)}
-.lb-row.me{background:var(--sage-bg);border-color:var(--sage-lt)}
-.lb-rk{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--ink-soft);min-width:18px}
-.lb-av{width:30px;height:30px;border-radius:50%;background:var(--linen);border:1.5px solid var(--rule);display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
-.lb-in{flex:1}
-.lb-nm{font-family:'Cormorant Garamond',serif;font-size:.88rem;font-weight:600}
-.lb-sb{font-size:.56rem;font-weight:500;letter-spacing:.5px;text-transform:uppercase;color:var(--ink-soft)}
-.lb-pt{font-family:'DM Serif Display',serif;font-size:.92rem;color:var(--sage-dk)}
-.ach-g{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.ach{background:var(--paper);border:1px solid var(--rule);border-radius:var(--rsm);padding:10px 6px;text-align:center;cursor:pointer;transition:all .16s}
-.ach:hover{transform:translateY(-1px);border-color:var(--flax)}
-.ach.on{background:var(--flax-lt);border-color:#D4B87A}
-.ach .ai{font-size:1.2rem;display:block;margin-bottom:4px}
-.ach .an{font-size:.51rem;font-weight:500;letter-spacing:.5px;text-transform:uppercase;color:var(--ink-soft)}
-.ach.on .an{color:#86632A}
-.pat{display:flex;align-items:center;gap:9px;padding:8px 9px;border-radius:var(--rsm);border:1px solid var(--rule);background:var(--paper);margin-bottom:5px;transition:border-color .15s}
-.pat:hover{border-color:var(--sage-lt)}
-.pat-i{font-size:.9rem}
-.pat-l{flex:1;font-size:.61rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--ink-soft)}
-.pat-v{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.88rem;color:var(--ink)}
-/* TOAST */
-#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:var(--paper);border-radius:var(--rsm);padding:10px 20px;font-size:.71rem;font-weight:500;letter-spacing:.5px;border:1px solid rgba(0,0,0,.3);transition:transform .3s cubic-bezier(.34,1.56,.64,1);z-index:9999;pointer-events:none;white-space:nowrap}
-#toast.show{transform:translateX(-50%) translateY(0)}
-@media(max-width:900px){.map-grid,.log-grid,.stats-grid{grid-template-columns:1fr}.hero-row{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:600px){.header-in{padding:0 16px}.app{padding:16px 16px 40px}.xp-w{display:none}.nav-tab .tl{display:none}}
+  :root {
+    --sky: #b8dff7;
+    --sky-light: #dff0fb;
+    --blue: #4a9fd4;
+    --blue-dark: #1e5f8e;
+    --navy: #1a3a5c;
+    --accent: #6ec6f5;
+    --green: #5fcb7a;
+    --red: #f47b7b;
+    --white: #ffffff;
+    --card: rgba(255,255,255,0.85);
+    --radius: 18px;
+    --shadow: 0 4px 20px rgba(30,95,142,0.13);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #c8e8f9 0%, #e8f6fd 60%, #b8dff7 100%);
+    min-height: 100vh;
+    color: var(--navy);
+  }
+
+  /* ===== LAYOUT ===== */
+  .app { display: flex; flex-direction: column; min-height: 100vh; }
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--sky); padding: 10px 18px;
+    box-shadow: 0 2px 10px rgba(30,95,142,0.1);
+    position: sticky; top: 0; z-index: 100;
+    gap: 10px;
+  }
+  .topbar-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem; color: var(--navy); letter-spacing: 0.5px;
+    flex: 1;
+  }
+  .topbar-right { display: flex; gap: 8px; align-items: center; }
+  .topbar-tab {
+    background: var(--white); border: none; border-radius: 30px;
+    padding: 7px 16px; font-family: 'Nunito', sans-serif; font-weight: 800;
+    font-size: 0.82rem; color: var(--navy); cursor: pointer;
+    transition: all 0.2s; box-shadow: 0 2px 8px rgba(30,95,142,0.1);
+  }
+  .topbar-tab.active, .topbar-tab:hover {
+    background: var(--blue-dark); color: white;
+  }
+  .home-btn {
+    width: 42px; height: 42px; border-radius: 50%; background: var(--navy);
+    border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s;
+  }
+  .home-btn:hover { transform: scale(1.1); }
+  .home-btn svg { width: 22px; height: 22px; fill: white; }
+
+  .main { flex: 1; padding: 16px; max-width: 1300px; margin: 0 auto; width: 100%; }
+
+  /* ===== PAGES ===== */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--card); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 16px;
+    backdrop-filter: blur(8px);
+  }
+  .card-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem; color: var(--navy); text-align: center;
+    background: var(--sky); border-radius: 30px; padding: 5px 16px;
+    display: inline-block; margin-bottom: 12px;
+  }
+
+  /* ===== MAP PAGE ===== */
+  .map-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    grid-template-rows: auto auto;
+    gap: 14px;
+  }
+  .map-main { grid-row: 1 / 3; }
+  .map-info-col { display: flex; flex-direction: column; gap: 14px; }
+
+  /* Floor plan */
+  .floorplan-wrap {
+    background: white; border-radius: 14px; padding: 12px;
+    border: 2px solid var(--sky); min-height: 300px;
+    position: relative; overflow: hidden;
+  }
+  .floorplan-svg { width: 100%; height: auto; display: block; }
+
+  /* Room tabs */
+  .room-tabs { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .room-tab {
+    background: var(--sky-light); border: 2px solid var(--sky);
+    border-radius: 12px; padding: 6px 10px; cursor: pointer;
+    font-weight: 700; font-size: 0.78rem; color: var(--navy);
+    transition: all 0.18s; flex: 1; min-width: 80px; text-align: center;
+  }
+  .room-tab.active { background: var(--blue-dark); color: white; border-color: var(--blue-dark); }
+  .room-tab:hover:not(.active) { background: var(--accent); }
+  .room-thumb { width: 100%; height: 60px; background: #eaf5fd; border-radius: 8px; margin-top: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; color: #888; overflow: hidden; }
+
+  /* Availability legend */
+  .avail-legend { display: flex; gap: 14px; margin-top: 10px; }
+  .avail-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+  .avail-legend span { font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; gap: 5px; }
+
+  /* Chart bars */
+  .mini-chart { display: flex; align-items: flex-end; gap: 4px; height: 70px; margin: 8px 0 4px; }
+  .bar {
+    flex: 1; border-radius: 4px 4px 0 0; background: var(--blue);
+    transition: height 0.4s ease; cursor: pointer; position: relative;
+  }
+  .bar.active-bar { background: var(--blue-dark); }
+  .bar:hover { background: var(--blue-dark); }
+  .chart-labels { display: flex; justify-content: space-between; font-size: 0.65rem; color: #888; font-weight: 700; }
+
+  /* ===== LOG PAGE ===== */
+  .log-grid { display: grid; grid-template-columns: 1fr 280px; gap: 14px; }
+  .log-main { display: flex; flex-direction: column; gap: 12px; }
+  .log-time {
+    font-family: 'Fredoka One', cursive; font-size: 2rem; color: var(--blue);
+    text-align: center; padding: 10px 0;
+  }
+  .log-time-label { font-size: 0.85rem; font-weight: 800; color: var(--navy); text-align: center; margin-bottom: -8px; }
+
+  .slider-row {
+    background: var(--sky-light); border-radius: 14px; padding: 12px 16px;
+    display: flex; align-items: center; gap: 12px;
+    border: 2px solid transparent; transition: border-color 0.2s;
+  }
+  .slider-row:hover { border-color: var(--accent); }
+  .slider-label { font-weight: 800; font-size: 0.82rem; color: var(--blue-dark); min-width: 65px; }
+  .slider-icon-left, .slider-icon-right { font-size: 1.3rem; flex-shrink: 0; }
+  .slider-wrap { flex: 1; }
+  input[type=range] {
+    -webkit-appearance: none; width: 100%; height: 8px;
+    border-radius: 4px; background: linear-gradient(to right, var(--blue) var(--val, 30%), #c8e8f9 var(--val, 30%));
+    outline: none; cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 22px; height: 22px;
+    background: var(--navy); border-radius: 50%; cursor: pointer;
+    border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: transform 0.15s;
+  }
+  input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+  .save-btn {
+    padding: 6px 14px; border-radius: 30px; border: none; cursor: pointer;
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.8rem;
+    transition: all 0.2s; flex-shrink: 0;
+  }
+  .save-btn.unsaved { background: #f47b7b; color: white; }
+  .save-btn.saved { background: var(--green); color: white; }
+  .save-btn:hover { transform: scale(1.05); }
+
+  /* Timer panel */
+  .timer-panel { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .donut-wrap { position: relative; width: 150px; height: 150px; }
+  .donut-wrap svg { width: 150px; height: 150px; transform: rotate(-90deg); }
+  .donut-center {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .donut-center .mode { font-family: 'Fredoka One', cursive; font-size: 1.3rem; color: white; }
+  .donut-center .session { font-size: 0.75rem; font-weight: 800; color: #aaccee; }
+  .donut-bg { fill: var(--navy); }
+  .donut-track { fill: none; stroke: rgba(255,255,255,0.15); stroke-width: 12; }
+  .donut-prog { fill: none; stroke: var(--accent); stroke-width: 12; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+
+  .timer-stat { text-align: center; }
+  .timer-stat .ts-label { font-size: 0.72rem; font-weight: 800; color: var(--blue); text-transform: uppercase; letter-spacing: 1px; }
+  .timer-stat .ts-val { font-family: 'Fredoka One', cursive; font-size: 1.6rem; color: var(--navy); }
+  .timer-btns { display: flex; gap: 10px; }
+  .timer-btn {
+    padding: 8px 20px; border-radius: 30px; border: none; cursor: pointer;
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.85rem;
+    transition: all 0.2s;
+  }
+  .timer-btn.start { background: var(--green); color: white; }
+  .timer-btn.stop { background: var(--red); color: white; }
+  .timer-btn.reset { background: var(--sky); color: var(--navy); }
+  .timer-btn:hover { transform: scale(1.05); }
+
+  /* ===== STATS PAGE ===== */
+  .stats-grid { display: grid; grid-template-columns: 1fr 260px; gap: 14px; }
+  .stats-main { display: flex; flex-direction: column; gap: 14px; }
+
+  /* Heatmap */
+  .heatmap-wrap { overflow-x: auto; }
+  .heatmap-months { display: flex; gap: 0; margin-bottom: 4px; }
+  .heatmap-month-label { font-size: 0.7rem; font-weight: 700; color: #888; }
+  .heatmap-grid { display: grid; grid-template-rows: repeat(7, 14px); grid-auto-flow: column; gap: 3px; }
+  .hm-cell {
+    width: 14px; height: 14px; border-radius: 3px;
+    background: #ddeef7; cursor: pointer; transition: transform 0.1s;
+  }
+  .hm-cell:hover { transform: scale(1.3); }
+  .hm-cell.l1 { background: #b8dff7; }
+  .hm-cell.l2 { background: #6ec6f5; }
+  .hm-cell.l3 { background: #4a9fd4; }
+  .hm-cell.l4 { background: #1e5f8e; }
+  .hm-legend { display: flex; align-items: center; gap: 5px; margin-top: 6px; font-size: 0.7rem; color: #888; font-weight: 700; justify-content: flex-end; }
+  .hm-swatch { width: 14px; height: 14px; border-radius: 3px; }
+
+  /* Bottom stats grid */
+  .stats-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .stat-big { font-family: 'Fredoka One', cursive; font-size: 3.5rem; color: var(--blue-dark); line-height: 1; }
+  .stat-sub { font-weight: 800; font-size: 0.85rem; color: var(--blue); margin-top: 4px; }
+  .stat-label { font-weight: 800; font-size: 0.9rem; color: var(--navy); margin-bottom: 8px; }
+
+  /* Donut daily */
+  .daily-donut-wrap { position: relative; width: 120px; height: 120px; margin: 0 auto; }
+  .daily-donut-wrap svg { width: 120px; height: 120px; transform: rotate(-90deg); }
+  .daily-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .daily-center .pct { font-family: 'Fredoka One', cursive; font-size: 1.4rem; color: var(--blue); }
+  .daily-center .lbl { font-size: 0.6rem; font-weight: 800; color: #888; text-align: center; }
+
+  /* Mini map */
+  .fav-map { background: #e8f0f7; border-radius: 12px; height: 100px; position: relative; overflow: hidden; }
+  .map-roads { position: absolute; inset: 0; }
+  .map-pin { position: absolute; font-size: 1.4rem; transform: translate(-50%, -100%); cursor: pointer; transition: transform 0.2s; }
+  .map-pin:hover { transform: translate(-50%, -100%) scale(1.3); }
+
+  /* Leaderboard */
+  .lb-row {
+    display: flex; align-items: center; gap: 10px; padding: 8px;
+    border-radius: 12px; margin-bottom: 6px; transition: background 0.15s;
+  }
+  .lb-row:hover { background: var(--sky-light); }
+  .lb-rank { font-family: 'Fredoka One', cursive; font-size: 1.1rem; min-width: 24px; text-align: center; }
+  .lb-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--sky); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+  .lb-name { flex: 1; font-weight: 800; font-size: 0.85rem; }
+  .lb-pts { font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: var(--blue); }
+  .lb-title { font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: var(--navy); text-align: center; margin-top: 6px; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .map-grid, .log-grid, .stats-grid { grid-template-columns: 1fr; }
+    .map-main { grid-row: auto; }
+    .stats-bottom { grid-template-columns: 1fr 1fr; }
+    .topbar-title { font-size: 1.2rem; }
+    .topbar-tab { padding: 6px 10px; font-size: 0.75rem; }
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .page.active .card { animation: fadeUp 0.35s ease both; }
+  .page.active .card:nth-child(2) { animation-delay: 0.05s; }
+  .page.active .card:nth-child(3) { animation-delay: 0.1s; }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--navy); color: white; padding: 10px 24px; border-radius: 30px;
+    font-weight: 800; font-size: 0.9rem; transition: transform 0.3s ease;
+    z-index: 999; pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* Seat dot */
+  .seat-dot { cursor: pointer; transition: r 0.2s; }
+  .seat-dot:hover { r: 9; }
+
+  /* Nav bottom mobile hint */
+  .bottomnav { display: none; }
+  @media (max-width: 600px) {
+    .bottomnav {
+      display: flex; justify-content: space-around; align-items: center;
+      background: var(--navy); padding: 10px 0;
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+    }
+    .bottomnav-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      color: rgba(255,255,255,0.6); font-size: 0.65rem; font-weight: 800; cursor: pointer;
+      transition: color 0.2s;
+    }
+    .bottomnav-btn.active, .bottomnav-btn:hover { color: white; }
+    .bottomnav-btn svg { width: 24px; height: 24px; fill: currentColor; }
+    .main { padding-bottom: 70px; }
+    .topbar .topbar-tab { display: none; }
+  }
 </style>
 </head>
 <body>
-
-<header class="header">
-  <div class="header-in">
-    <div class="brand">
-      <span class="brand-name">Study<span class="brand-dot">·</span>Spot</span>
-      <span class="brand-tag">Beta</span>
-    </div>
-    <nav class="nav">
-      <button class="nav-tab active" id="t-map" onclick="goPage('map')">
-        <span>🗺</span><span class="tl"> Map</span>
+<div class="app">
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-title">📚 StudySpot</div>
+    <div class="topbar-right">
+      <button class="topbar-tab active" onclick="showPage('map')">MAP</button>
+      <button class="topbar-tab" onclick="showPage('log')">LOG</button>
+      <button class="topbar-tab" onclick="showPage('stats')">STATS</button>
+      <button class="home-btn" onclick="showPage('map')" title="Home">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
       </button>
-      <button class="nav-tab" id="t-log" onclick="goPage('log')">
-        <span>📋</span><span class="tl"> Log</span>
-      </button>
-      <button class="nav-tab" id="t-stats" onclick="goPage('stats')">
-        <span>✦</span><span class="tl"> Stats</span>
-      </button>
-    </nav>
-    <div class="header-right">
-      <div class="streak">🔥 14 days</div>
-      <div class="xp-w">
-        <div class="xp-l">Lv 8 · XP</div>
-        <div class="xp-bar"><div class="xp-fill"></div></div>
-      </div>
     </div>
   </div>
-</header>
 
-<main class="app">
+  <div class="main">
 
-<!-- MAP -->
-<section class="page active" id="page-map">
-  <div class="room-tabs">
-    <button class="rtab active" onclick="selectRoom(0,this)"><span class="sw" style="background:var(--sky)"></span> Café Floor</button>
-    <button class="rtab" onclick="selectRoom(1,this)"><span class="sw" style="background:var(--sage)"></span> Quiet Zone</button>
-    <button class="rtab" onclick="selectRoom(2,this)"><span class="sw" style="background:var(--rose)"></span> Collab Space</button>
-    <button class="rtab" onclick="selectRoom(3,this)"><span class="sw" style="background:var(--flax)"></span> Study Pods</button>
-  </div>
-  <div class="map-grid">
-    <div class="col-l">
-      <div class="card" style="padding:14px">
-        <div class="ch">
-          <span class="ct" id="fp-rname">Café Floor</span>
-          <span class="chip c-sage" id="fp-free">18 free</span>
-          <span class="chip c-rose" id="fp-occ">9 taken</span>
-        </div>
-        <div class="fp-wrap">
-          <svg id="fp-svg" viewBox="0 0 700 490" xmlns="http://www.w3.org/2000/svg" style="font-family:'Jost',sans-serif">
-            <rect x="2" y="2" width="696" height="486" fill="#EBF2F7" stroke="#A8C4D8" stroke-width="3" rx="6"/>
-            <!-- SERVICE COUNTER -->
-            <rect x="10" y="10" width="440" height="52" fill="#C8DCE8" stroke="#7BA7BC" stroke-width="2" rx="5"/>
-            <rect x="14" y="13" width="432" height="7" fill="#B0CCDE" rx="2"/>
-            <rect x="18" y="20" width="30" height="30" fill="#9BBAD0" rx="5" stroke="#5A8FA8" stroke-width="1.5"/>
-            <rect x="23" y="24" width="20" height="12" fill="#7AA0BC" rx="2"/>
-            <circle cx="33" cy="46" r="4" fill="#5A8FA8"/>
-            <text x="33" y="60" text-anchor="middle" font-size="7" fill="#4A7A94" font-weight="500">espresso</text>
-            <rect x="56" y="22" width="24" height="30" fill="#9BBAD0" rx="5" stroke="#5A8FA8" stroke-width="1.5"/>
-            <ellipse cx="68" cy="28" rx="9" ry="4" fill="#7AA0BC"/>
-            <text x="68" y="60" text-anchor="middle" font-size="7" fill="#4A7A94" font-weight="500">grinder</text>
-            <rect x="88" y="18" width="38" height="34" fill="#B4CCE0" rx="5" stroke="#5A8FA8" stroke-width="1.5"/>
-            <rect x="92" y="22" width="30" height="14" fill="#9BBAD0" rx="2"/>
-            <text x="107" y="60" text-anchor="middle" font-size="7" fill="#4A7A94" font-weight="500">register</text>
-            <rect x="134" y="18" width="88" height="34" fill="#D4E8F4" rx="5" stroke="#5A8FA8" stroke-width="1.5"/>
-            <text x="178" y="38" text-anchor="middle" font-size="9" fill="#3B6A84">🧁 pastries</text>
-            <rect x="230" y="11" width="100" height="40" fill="#BDD4E4" rx="4" stroke="#5A8FA8" stroke-width="1.5"/>
-            <text x="280" y="27" text-anchor="middle" font-size="8" fill="#2C4A5A" font-weight="600" letter-spacing="2">M E N U</text>
-            <line x1="240" y1="33" x2="320" y2="33" stroke="#5A8FA8" stroke-width="0.7"/>
-            <text x="280" y="43" text-anchor="middle" font-size="6.5" fill="#4A7A94">latte · tea · pour-over</text>
-            <rect x="338" y="20" width="94" height="20" fill="#C0D8EC" rx="4" stroke="#5A8FA8" stroke-width="1.5"/>
-            <text x="385" y="33" text-anchor="middle" font-size="7.5" fill="#2C4A5A" font-weight="600">☕ pick-up</text>
-            <!-- PARTITION -->
-            <line x1="455" y1="2" x2="455" y2="205" stroke="#7BA7BC" stroke-width="4"/>
-            <line x1="455" y1="242" x2="455" y2="488" stroke="#7BA7BC" stroke-width="4"/>
-            <path d="M455 205 Q478 205 478 228" fill="none" stroke="#7BA7BC" stroke-width="1.5" stroke-dasharray="4,3"/>
-            <rect x="460" y="10" width="232" height="108" fill="#E0EBF2" stroke="#A8C4D8" stroke-width="1.5" rx="4"/>
-            <text x="576" y="60" text-anchor="middle" font-size="10" fill="#8CB0C4" font-weight="600">STAFF / STORAGE</text>
-            <rect x="460" y="126" width="232" height="110" fill="#E0EBF2" stroke="#A8C4D8" stroke-width="1.5" rx="4"/>
-            <text x="576" y="181" text-anchor="middle" font-size="10" fill="#8CB0C4" font-weight="600">RESTROOMS 🚻</text>
-            <!-- WINDOW WALL -->
-            <rect x="2" y="74" width="10" height="390" fill="#A8C4D8" stroke="#7BA7BC" stroke-width="1"/>
-            <rect x="2.5" y="82" width="8" height="46" fill="#CBE0F0" stroke="#7BA7BC" stroke-width="0.8" rx="1"/>
-            <rect x="2.5" y="138" width="8" height="46" fill="#CBE0F0" stroke="#7BA7BC" stroke-width="0.8" rx="1"/>
-            <rect x="2.5" y="194" width="8" height="46" fill="#CBE0F0" stroke="#7BA7BC" stroke-width="0.8" rx="1"/>
-            <rect x="2.5" y="250" width="8" height="46" fill="#CBE0F0" stroke="#7BA7BC" stroke-width="0.8" rx="1"/>
-            <rect x="2.5" y="306" width="8" height="46" fill="#CBE0F0" stroke="#7BA7BC" stroke-width="0.8" rx="1"/>
-            <rect x="2.5" y="362" width="8" height="46" fill="#CBE0F0" stroke="#7BA7BC" stroke-width="0.8" rx="1"/>
-            <rect x="12" y="76" width="14" height="387" fill="#BCCFDC" stroke="#7BA7BC" stroke-width="1.2" rx="2"/>
-            <!-- WINDOW STOOLS -->
-            <circle cx="42" cy="110" r="13" fill="#DDE8EF" stroke="#7BA7BC" stroke-width="1.5"/>
-            <circle class="seat" cx="42" cy="110" r="8" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'Window 1')"/>
-            <circle cx="42" cy="156" r="13" fill="#DDE8EF" stroke="#7BA7BC" stroke-width="1.5"/>
-            <circle class="seat" cx="42" cy="156" r="8" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'Window 2')"/>
-            <circle cx="42" cy="202" r="13" fill="#DDE8EF" stroke="#7BA7BC" stroke-width="1.5"/>
-            <circle class="seat" cx="42" cy="202" r="8" fill="#C9877A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'Window 3')"/>
-            <circle cx="42" cy="248" r="13" fill="#DDE8EF" stroke="#7BA7BC" stroke-width="1.5"/>
-            <circle class="seat" cx="42" cy="248" r="8" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'Window 4')"/>
-            <circle cx="42" cy="294" r="13" fill="#DDE8EF" stroke="#7BA7BC" stroke-width="1.5"/>
-            <circle class="seat" cx="42" cy="294" r="8" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'Window 5')"/>
-            <circle cx="42" cy="340" r="13" fill="#DDE8EF" stroke="#7BA7BC" stroke-width="1.5"/>
-            <circle class="seat" cx="42" cy="340" r="8" fill="#C9877A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'Window 6')"/>
-            <circle cx="42" cy="386" r="13" fill="#DDE8EF" stroke="#7BA7BC" stroke-width="1.5"/>
-            <circle class="seat" cx="42" cy="386" r="8" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'Window 7')"/>
-            <circle cx="42" cy="432" r="13" fill="#DDE8EF" stroke="#7BA7BC" stroke-width="1.5"/>
-            <circle class="seat" cx="42" cy="432" r="8" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'Window 8')"/>
-            <!-- ROUND TABLES -->
-            <circle cx="162" cy="168" r="36" fill="#DDE8EF" stroke="#7BA7BC" stroke-width="1.8"/>
-            <text x="162" y="173" text-anchor="middle" font-size="8.5" fill="#7BA7BC" font-weight="600">T1</text>
-            <circle class="seat" cx="162" cy="125" r="11" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T1 N')"/>
-            <circle class="seat" cx="162" cy="211" r="11" fill="#C9877A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T1 S')"/>
-            <circle class="seat" cx="119" cy="168" r="11" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T1 W')"/>
-            <circle class="seat" cx="205" cy="168" r="11" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T1 E')"/>
-            <circle cx="320" cy="168" r="36" fill="#DDE8EF" stroke="#7BA7BC" stroke-width="1.8"/>
-            <text x="320" y="173" text-anchor="middle" font-size="8.5" fill="#7BA7BC" font-weight="600">T2</text>
-            <circle class="seat" cx="320" cy="125" r="11" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T2 N')"/>
-            <circle class="seat" cx="320" cy="211" r="11" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T2 S')"/>
-            <circle class="seat" cx="277" cy="168" r="11" fill="#C9877A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T2 W')"/>
-            <circle class="seat" cx="363" cy="168" r="11" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T2 E')"/>
-            <circle cx="162" cy="330" r="36" fill="#DDE8EF" stroke="#7BA7BC" stroke-width="1.8"/>
-            <text x="162" y="335" text-anchor="middle" font-size="8.5" fill="#7BA7BC" font-weight="600">T3</text>
-            <circle class="seat" cx="162" cy="287" r="11" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T3 N')"/>
-            <circle class="seat" cx="162" cy="373" r="11" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T3 S')"/>
-            <circle class="seat" cx="119" cy="330" r="11" fill="#C9877A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T3 W')"/>
-            <circle class="seat" cx="205" cy="330" r="11" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T3 E')"/>
-            <circle cx="320" cy="330" r="36" fill="#DDE8EF" stroke="#7BA7BC" stroke-width="1.8"/>
-            <text x="320" y="335" text-anchor="middle" font-size="8.5" fill="#7BA7BC" font-weight="600">T4</text>
-            <circle class="seat" cx="320" cy="287" r="11" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T4 N')"/>
-            <circle class="seat" cx="320" cy="373" r="11" fill="#C9877A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T4 S')"/>
-            <circle class="seat" cx="277" cy="330" r="11" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T4 W')"/>
-            <circle class="seat" cx="363" cy="330" r="11" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T4 E')"/>
-            <!-- SIDE TABLES -->
-            <rect x="394" y="82" width="52" height="38" fill="#DDE8EF" stroke="#7BA7BC" stroke-width="1.5" rx="9"/>
-            <text x="420" y="104" text-anchor="middle" font-size="7.5" fill="#7BA7BC" font-weight="600">T5</text>
-            <circle class="seat" cx="404" cy="76" r="10" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T5 NL')"/>
-            <circle class="seat" cx="436" cy="76" r="10" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T5 NR')"/>
-            <circle class="seat" cx="404" cy="126" r="10" fill="#C9877A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T5 SL')"/>
-            <circle class="seat" cx="436" cy="126" r="10" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T5 SR')"/>
-            <rect x="394" y="194" width="52" height="38" fill="#DDE8EF" stroke="#7BA7BC" stroke-width="1.5" rx="9"/>
-            <text x="420" y="216" text-anchor="middle" font-size="7.5" fill="#7BA7BC" font-weight="600">T6</text>
-            <circle class="seat" cx="404" cy="188" r="10" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T6 NL')"/>
-            <circle class="seat" cx="436" cy="188" r="10" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T6 NR')"/>
-            <circle class="seat" cx="404" cy="238" r="10" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T6 SL')"/>
-            <circle class="seat" cx="436" cy="238" r="10" fill="#C9877A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'T6 SR')"/>
-            <!-- LOUNGE -->
-            <rect x="82" y="406" width="358" height="78" fill="rgba(168,196,216,.1)" stroke="#A8C4D8" stroke-width="1" rx="10" stroke-dasharray="5,3"/>
-            <text x="261" y="420" text-anchor="middle" font-size="7.5" fill="#8BADC0" font-weight="600" letter-spacing="1">LOUNGE</text>
-            <rect x="90" y="426" width="108" height="44" fill="#C0D4E4" stroke="#7BA7BC" stroke-width="1.8" rx="10"/>
-            <rect x="94" y="420" width="100" height="14" fill="#AABDD8" rx="5" stroke="#7BA7BC" stroke-width="1.2"/>
-            <rect x="90" y="426" width="12" height="44" fill="#AABDD8" rx="4"/>
-            <rect x="186" y="426" width="12" height="44" fill="#AABDD8" rx="4"/>
-            <circle class="seat" cx="118" cy="450" r="10" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'Sofa L1')"/>
-            <circle class="seat" cx="146" cy="450" r="10" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'Sofa L2')"/>
-            <circle class="seat" cx="174" cy="450" r="10" fill="#C9877A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'Sofa L3')"/>
-            <rect x="213" y="438" width="46" height="24" fill="#D0E4F0" stroke="#7BA7BC" stroke-width="1.2" rx="7"/>
-            <text x="236" y="453" text-anchor="middle" font-size="10" fill="#7BA7BC">☕</text>
-            <rect x="272" y="426" width="108" height="44" fill="#C0D4E4" stroke="#7BA7BC" stroke-width="1.8" rx="10"/>
-            <rect x="276" y="420" width="100" height="14" fill="#AABDD8" rx="5" stroke="#7BA7BC" stroke-width="1.2"/>
-            <rect x="272" y="426" width="12" height="44" fill="#AABDD8" rx="4"/>
-            <rect x="368" y="426" width="12" height="44" fill="#AABDD8" rx="4"/>
-            <circle class="seat" cx="300" cy="450" r="10" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'Sofa R1')"/>
-            <circle class="seat" cx="328" cy="450" r="10" fill="#C9877A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'Sofa R2')"/>
-            <circle class="seat" cx="356" cy="450" r="10" fill="#8FA68A" stroke="white" stroke-width="2" onclick="toggleSeat(this,'Sofa R3')"/>
-            <!-- PLANTS & EXTRAS -->
-            <circle cx="451" cy="268" r="12" fill="#C0DCC8" stroke="#7AB890" stroke-width="1.5"/>
-            <text x="451" y="273" text-anchor="middle" font-size="13">🌿</text>
-            <circle cx="451" cy="458" r="11" fill="#C0DCC8" stroke="#7AB890" stroke-width="1.5"/>
-            <text x="451" y="463" text-anchor="middle" font-size="12">🌱</text>
-            <rect x="542" y="453" width="134" height="32" fill="rgba(240,245,248,.8)" stroke="#7BA7BC" stroke-width="1.5" stroke-dasharray="6,4" rx="4"/>
-            <text x="609" y="472" text-anchor="middle" font-size="7.5" fill="#7BA7BC" font-weight="600">ENTRANCE / EXIT</text>
-            <line x1="542" y1="453" x2="542" y2="432" stroke="#7BA7BC" stroke-width="1.8"/>
-            <path d="M542 432 Q522 432 522 453" fill="none" stroke="#7BA7BC" stroke-width="1.2" stroke-dasharray="4,3"/>
-            <line x1="462" y1="476" x2="534" y2="476" stroke="#8BADC0" stroke-width="1.5"/>
-            <line x1="462" y1="472" x2="462" y2="480" stroke="#8BADC0" stroke-width="1.5"/>
-            <line x1="534" y1="472" x2="534" y2="480" stroke="#8BADC0" stroke-width="1.5"/>
-            <text x="498" y="488" text-anchor="middle" font-size="7.5" fill="#8BADC0">10 m</text>
-            <text x="683" y="486" text-anchor="middle" font-size="9" fill="#8BADC0">N ↑</text>
-          </svg>
-        </div>
-        <div class="fp-leg">
-          <div class="fp-li"><div class="fp-d" style="background:#8FA68A"></div>Available</div>
-          <div class="fp-li"><div class="fp-d" style="background:#C9877A"></div>Occupied</div>
-          <div class="fp-li"><div class="fp-d" style="background:#C0D4E4;border:1px solid #7BA7BC"></div>Furniture</div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="ch"><span class="ct">Live Occupancy</span></div>
-        <div class="occ-row">
-          <div class="occ-c"><div class="occ-n" style="color:var(--sage-dk)">18</div><div class="occ-l">Free seats</div></div>
-          <div class="occ-c"><div class="occ-n" style="color:var(--rose)">9</div><div class="occ-l">Occupied</div></div>
-          <div class="occ-c"><div class="occ-n" style="color:var(--sky)">67%</div><div class="occ-l">Available</div></div>
-        </div>
-      </div>
-    </div>
-    <div class="col-r">
-      <div class="card">
-        <div class="ch"><span class="ct">Popular Times</span></div>
-        <div class="nav-r">
-          <button class="btn b-ghost b-sm" onclick="shiftDay(-1)">‹</button>
-          <span id="day-lbl">Today</span>
-          <button class="btn b-ghost b-sm" onclick="shiftDay(1)">›</button>
-        </div>
-        <div class="chart-tabs">
-          <button class="ctab active" onclick="switchChart('popular',this)">Busy</button>
-          <button class="ctab" onclick="switchChart('noise',this)">Noise</button>
-          <button class="ctab" onclick="switchChart('cozy',this)">Cozy</button>
-        </div>
-        <div class="bc" id="main-chart"></div>
-        <div style="display:flex" id="chart-lbs"></div>
-      </div>
-      <div class="card">
-        <div class="ch"><span class="ct">Amenities</span></div>
-        <div class="am-list">
-          <span class="am am-y">✓ Wi-Fi</span>
-          <span class="am am-y">✓ Outlets</span>
-          <span class="am am-y">✓ Daylight</span>
-          <span class="am am-y">✓ AC / Heat</span>
-          <span class="am am-n">✗ Printing</span>
-          <span class="am am-y">✓ Accessible</span>
-          <span class="am am-y">✓ Restrooms</span>
-          <span class="am am-n">✗ Private rooms</span>
-        </div>
-      </div>
-      <div class="card">
-        <div class="ch"><span class="ct">Community Vibes</span><span class="cs">from logs</span></div>
-        <div id="vibe-rows"></div>
-      </div>
-    </div>
-  </div>
-</section>
+    <!-- ===== MAP PAGE ===== -->
+    <div class="page active" id="page-map">
+      <div class="map-grid">
 
-<!-- LOG -->
-<section class="page" id="page-log">
-  <div class="log-grid">
-    <div class="col-l">
-      <div class="obs">
-        <div>
-          <div class="obs-t" id="log-clock">—</div>
-          <div class="obs-m">Time of observation</div>
-        </div>
-        <div class="obs-r">
-          <div class="obs-loc">Central Library</div>
-          <div class="obs-room">Café Floor · Room 1</div>
-        </div>
-      </div>
-      <div class="sl-c" id="slc-loud">
-        <div class="sl-h">
-          <span class="sl-name">🔊 Noise Level</span>
-          <span class="chip c-sky" id="slv-loud">Quiet</span>
-        </div>
-        <div class="sl-tr">
-          <span class="sl-mn">Silent</span>
-          <input type="range" min="0" max="100" value="28" id="sl-loud" oninput="updateSl(this,'loud')">
-          <span class="sl-mx">Loud</span>
-        </div>
-        <div class="sl-ft">
-          <span class="sl-hint">How noisy is it right now?</span>
-          <button class="log-btn lp" id="svb-loud" onclick="saveSl('loud')">Log it</button>
-        </div>
-      </div>
-      <div class="sl-c logged" id="slc-busy">
-        <div class="sl-h">
-          <span class="sl-name">👥 Busyness</span>
-          <span class="chip c-sage" id="slv-busy">Moderate</span>
-        </div>
-        <div class="sl-tr">
-          <span class="sl-mn">Empty</span>
-          <input type="range" min="0" max="100" value="55" id="sl-busy" oninput="updateSl(this,'busy')">
-          <span class="sl-mx">Packed</span>
-        </div>
-        <div class="sl-ft">
-          <span class="sl-hint">How crowded does it feel?</span>
-          <button class="log-btn ls" id="svb-busy">✓ Logged</button>
-        </div>
-      </div>
-      <div class="sl-c logged" id="slc-bright">
-        <div class="sl-h">
-          <span class="sl-name">☀️ Brightness</span>
-          <span class="chip c-flax" id="slv-bright">Well-lit</span>
-        </div>
-        <div class="sl-tr">
-          <span class="sl-mn">Dark</span>
-          <input type="range" min="0" max="100" value="70" id="sl-bright" oninput="updateSl(this,'bright')">
-          <span class="sl-mx">Bright</span>
-        </div>
-        <div class="sl-ft">
-          <span class="sl-hint">Is there enough light?</span>
-          <button class="log-btn ls" id="svb-bright">✓ Logged</button>
-        </div>
-      </div>
-      <div class="sl-c" id="slc-outlets">
-        <div class="sl-h">
-          <span class="sl-name">🔌 Outlet Access</span>
-          <span class="chip c-rose" id="slv-outlets">Some</span>
-        </div>
-        <div class="sl-tr">
-          <span class="sl-mn">None</span>
-          <input type="range" min="0" max="100" value="40" id="sl-outlets" oninput="updateSl(this,'outlets')">
-          <span class="sl-mx">Plenty</span>
-        </div>
-        <div class="sl-ft">
-          <span class="sl-hint">Can you charge devices?</span>
-          <button class="log-btn lp" id="svb-outlets" onclick="saveSl('outlets')">Log it</button>
-        </div>
-      </div>
-      <div class="sl-c logged" id="slc-air">
-        <div class="sl-h">
-          <span class="sl-name">🌿 Air Quality</span>
-          <span class="chip c-sage" id="slv-air">Fresh</span>
-        </div>
-        <div class="sl-tr">
-          <span class="sl-mn">Stuffy</span>
-          <input type="range" min="0" max="100" value="72" id="sl-air" oninput="updateSl(this,'air')">
-          <span class="sl-mx">Fresh</span>
-        </div>
-        <div class="sl-ft">
-          <span class="sl-hint">How's the air quality?</span>
-          <button class="log-btn ls" id="svb-air">✓ Logged</button>
-        </div>
-      </div>
-    </div>
-    <div class="col-r">
-      <div class="timer-c">
-        <div class="mode-sel">
-          <button class="mo active" onclick="setMode('Study',this)">📚 Study</button>
-          <button class="mo" onclick="setMode('Break',this)">☕ Break</button>
-          <button class="mo" onclick="setMode('Focus',this)">🎯 Focus</button>
-        </div>
-        <div class="rw">
-          <svg width="136" height="136" viewBox="0 0 136 136">
-            <circle cx="68" cy="68" r="56" fill="#252018"/>
-            <circle cx="68" cy="68" r="52" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="10"/>
-            <circle id="t-ring" cx="68" cy="68" r="52" fill="none" stroke="#8FA68A" stroke-width="10"
-              stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="81.7"
-              style="transition:stroke-dashoffset 1s linear"/>
-          </svg>
-          <div class="rc">
-            <div class="rc-mode" id="rc-mode">STUDY</div>
-            <div class="rc-time" id="rc-time">00:00:00</div>
-            <div class="rc-sub">session</div>
+        <!-- Left: Floor Plan -->
+        <div class="card map-main">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <span class="card-title">📍 Floor Plan</span>
+            <div class="avail-legend">
+              <span><span class="avail-dot" style="background:var(--green)"></span> Available</span>
+              <span><span class="avail-dot" style="background:var(--red)"></span> Occupied</span>
+            </div>
           </div>
-        </div>
-        <div class="t-stats">
-          <div class="ts"><div class="tl">Goal</div><div class="tv" id="ts-goal">55:00</div></div>
-          <div class="ts"><div class="tl">Best</div><div class="tv" id="ts-best">2:48</div></div>
-          <div class="ts"><div class="tl">Today</div><div class="tv">1:12</div></div>
-          <div class="ts"><div class="tl">Sessions</div><div class="tv">4</div></div>
-        </div>
-        <div class="t-btns">
-          <button class="t-btn t-play" id="t-play" onclick="toggleTimer()">▶ Start</button>
-          <button class="t-btn t-reset" onclick="resetTimer()">↺ Reset</button>
-        </div>
-        <div class="t-gr">
-          <label>Goal (min)</label>
-          <input class="t-gi" type="number" id="goal-inp" value="55" min="1" max="480" onchange="setGoal(this.value)">
-        </div>
-      </div>
-      <div class="card">
-        <div class="ch"><span class="ct">Quick Note</span></div>
-        <textarea class="note-ta" id="note-area" placeholder="Jot something down…"></textarea>
-        <button class="btn b-sage" style="width:100%;margin-top:10px" onclick="saveNote()">Save Note</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- STATS -->
-<section class="page" id="page-stats">
-  <div class="stats-grid">
-    <div class="col-l">
-      <div class="sec-t">your year in study</div>
-      <div class="hero-row">
-        <div class="tin t-sky"><span class="tin-i">⏱</span><div class="tin-n">847</div><div class="tin-l">Total hours</div></div>
-        <div class="tin t-sage"><span class="tin-i">🔥</span><div class="tin-n">14</div><div class="tin-l">Day streak</div></div>
-        <div class="tin t-rose"><span class="tin-i">📍</span><div class="tin-n">12</div><div class="tin-l">Locations</div></div>
-        <div class="tin t-flax"><span class="tin-i">✦</span><div class="tin-n">62</div><div class="tin-l">XP this week</div></div>
-      </div>
-      <div class="card">
-        <div class="ch"><span class="ct">Study Heatmap</span><span class="chip c-ink">Last 9 months</span></div>
-        <div class="hm-out">
-          <div id="hm-months" class="hm-m"></div>
-          <div id="hm-grid" class="hm-g"></div>
-          <div class="hm-leg"><span>Less</span><div class="hm-sw h0"></div><div class="hm-sw h1"></div><div class="hm-sw h2"></div><div class="hm-sw h3"></div><div class="hm-sw h4"></div><span>More</span></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="ch"><span class="ct">This Week</span><span class="chip c-sage">+18% vs last week</span></div>
-        <div class="wk-bs" id="wk-bars"></div>
-        <div style="display:flex;margin-top:2px" id="wk-dlbls"></div>
-        <div class="avg3">
-          <div class="avg-b"><div class="avg-n">2.4h</div><div class="avg-l">Daily avg</div></div>
-          <div class="avg-b"><div class="avg-n">6 PM</div><div class="avg-l">Peak time</div></div>
-          <div class="avg-b"><div class="avg-n">94%</div><div class="avg-l">Goal rate</div></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="ch"><span class="ct">Your Top Spots</span></div>
-        <div id="top-spots"></div>
-      </div>
-    </div>
-    <div class="col-r">
-      <div class="goal-c">
-        <div class="ch" style="margin-bottom:0"><span class="ct">Weekly Goal</span><span class="chip c-flax">62%</span></div>
-        <div class="gr-wrap">
-          <div class="gr">
-            <svg width="72" height="72" viewBox="0 0 72 72" style="transform:rotate(-90deg)">
-              <circle cx="36" cy="36" r="28" fill="none" stroke="var(--linen)" stroke-width="8"/>
-              <circle cx="36" cy="36" r="28" fill="none" stroke="var(--flax)" stroke-width="8" stroke-dasharray="175.9" stroke-dashoffset="66.8" stroke-linecap="round"/>
+          <div class="floorplan-wrap">
+            <svg id="floorplan-svg" viewBox="0 0 600 400" class="floorplan-svg">
+              <!-- Room outline -->
+              <rect x="10" y="10" width="580" height="380" fill="#f8fbff" stroke="#ccc" stroke-width="2" rx="4"/>
+              <!-- Dividing wall -->
+              <line x1="420" y1="10" x2="420" y2="200" stroke="#555" stroke-width="3"/>
+              <line x1="420" y1="250" x2="420" y2="310" stroke="#555" stroke-width="3"/>
+              <!-- Bathroom area -->
+              <rect x="420" y="200" width="170" height="180" fill="#eaf5fd" stroke="#bbb" stroke-width="1.5"/>
+              <text x="505" y="295" text-anchor="middle" font-size="11" fill="#aaa" font-family="Nunito">Facilities</text>
+              <!-- Tables: 4-seat round tables -->
+              <!-- Row 1 -->
+              <g id="table-0"><circle cx="80" cy="70" r="28" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5"/>
+                <circle class="seat-dot" cx="80" cy="45" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="80" cy="95" r="7" fill="#f47b7b" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="55" cy="70" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="105" cy="70" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+              </g>
+              <g id="table-1"><circle cx="180" cy="70" r="28" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5"/>
+                <circle class="seat-dot" cx="180" cy="45" r="7" fill="#f47b7b" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="180" cy="95" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="155" cy="70" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="205" cy="70" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+              </g>
+              <g id="table-2"><circle cx="280" cy="70" r="28" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5"/>
+                <circle class="seat-dot" cx="280" cy="45" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="280" cy="95" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="255" cy="70" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="305" cy="70" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+              </g>
+              <!-- Row 2 -->
+              <g id="table-3"><circle cx="80" cy="160" r="28" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5"/>
+                <circle class="seat-dot" cx="80" cy="135" r="7" fill="#f47b7b" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="80" cy="185" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="55" cy="160" r="7" fill="#f47b7b" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="105" cy="160" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+              </g>
+              <g id="table-4"><circle cx="180" cy="160" r="28" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5"/>
+                <circle class="seat-dot" cx="180" cy="135" r="7" fill="#f47b7b" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="180" cy="185" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="155" cy="160" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="205" cy="160" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+              </g>
+              <g id="table-5"><circle cx="280" cy="160" r="28" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5"/>
+                <circle class="seat-dot" cx="280" cy="135" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="280" cy="185" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="255" cy="160" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="305" cy="160" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+              </g>
+              <!-- Row 3 -->
+              <g id="table-6"><circle cx="80" cy="250" r="28" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5"/>
+                <circle class="seat-dot" cx="80" cy="225" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="80" cy="275" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="55" cy="250" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="105" cy="250" r="7" fill="#f47b7b" onclick="toggleSeat(this)"/>
+              </g>
+              <g id="table-7"><circle cx="180" cy="250" r="28" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5"/>
+                <circle class="seat-dot" cx="180" cy="225" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="180" cy="275" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="155" cy="250" r="7" fill="#f47b7b" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="205" cy="250" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+              </g>
+              <g id="table-8"><circle cx="280" cy="250" r="28" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5"/>
+                <circle class="seat-dot" cx="280" cy="225" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="280" cy="275" r="7" fill="#f47b7b" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="255" cy="250" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle class="seat-dot" cx="305" cy="250" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+              </g>
+              <!-- Bar seating row -->
+              <rect x="40" y="340" width="50" height="30" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5" rx="4"/>
+              <circle class="seat-dot" cx="65" cy="335" r="7" fill="#f47b7b" onclick="toggleSeat(this)"/>
+              <rect x="120" y="340" width="50" height="30" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5" rx="4"/>
+              <circle class="seat-dot" cx="145" cy="335" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+              <rect x="200" y="340" width="50" height="30" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5" rx="4"/>
+              <circle class="seat-dot" cx="225" cy="335" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+              <rect x="280" y="340" width="50" height="30" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5" rx="4"/>
+              <circle class="seat-dot" cx="305" cy="335" r="7" fill="#f47b7b" onclick="toggleSeat(this)"/>
+              <rect x="360" y="340" width="50" height="30" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5" rx="4"/>
+              <circle class="seat-dot" cx="385" cy="335" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
             </svg>
-            <div class="gr-cen"><span class="gr-pct">62%</span></div>
           </div>
-          <div>
-            <div class="gd-n">12.4 / 20 hrs</div>
-            <div class="gd-l">this week</div>
-            <div class="gd-r">7.6 hrs to go</div>
+
+          <!-- Room selector -->
+          <div class="room-tabs">
+            <div class="room-tab active" onclick="selectRoom(0,this)">
+              <div>ROOM 1</div>
+              <div class="room-thumb">☕ Café Area</div>
+            </div>
+            <div class="room-tab" onclick="selectRoom(1,this)">
+              <div>ROOM 2</div>
+              <div class="room-thumb">📖 Quiet Zone</div>
+            </div>
+            <div class="room-tab" onclick="selectRoom(2,this)">
+              <div>ROOM 3</div>
+              <div class="room-thumb">💻 Open Space</div>
+            </div>
+            <div class="room-tab" onclick="selectRoom(3,this)">
+              <div>ROOM 4</div>
+              <div class="room-thumb">🎧 Study Pods</div>
+            </div>
           </div>
         </div>
-        <div class="g-track"><div class="g-fill"></div></div>
-        <div class="g-nums"><span>0</span><span>20 hrs</span></div>
-      </div>
-      <div class="card">
-        <div class="ch"><span class="ct">Leaderboard</span><span class="cs">top 5</span></div>
-        <div id="leaderboard"></div>
-      </div>
-      <div class="card">
-        <div class="ch"><span class="ct">Achievements</span></div>
-        <div class="ach-g" id="achievements"></div>
-      </div>
-      <div class="card">
-        <div class="ch"><span class="ct">Patterns</span></div>
-        <div id="patterns"></div>
+
+        <!-- Right: Info Charts -->
+        <div class="map-info-col">
+          <!-- Popular Times -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <span class="card-title">🕐 Popular Times</span>
+              <div style="display:flex;gap:4px;">
+                <button class="save-btn saved" onclick="prevDay()" style="padding:4px 10px">‹</button>
+                <span id="day-label" style="font-weight:800;font-size:0.78rem;color:var(--navy);align-self:center;min-width:28px;text-align:center;">Today</span>
+                <button class="save-btn saved" onclick="nextDay()" style="padding:4px 10px">›</button>
+              </div>
+            </div>
+            <div class="mini-chart" id="popular-chart"></div>
+            <div class="chart-labels"><span>9a</span><span>12p</span><span>3p</span><span>6p</span><span>9p</span></div>
+          </div>
+
+          <!-- Noise Level -->
+          <div class="card">
+            <span class="card-title">🔊 Noise Level</span>
+            <div class="mini-chart" id="noise-chart"></div>
+            <div class="chart-labels"><span>6a</span><span>9a</span><span>12p</span><span>3p</span><span>6p</span><span>9p</span></div>
+          </div>
+
+          <!-- Coziness -->
+          <div class="card">
+            <span class="card-title">🛋 Coziness</span>
+            <div class="mini-chart" id="cozy-chart"></div>
+            <div class="chart-labels"><span>6a</span><span>9a</span><span>12p</span><span>3p</span><span>6p</span><span>9p</span></div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
-</main>
 
-<div id="toast"></div>
+    <!-- ===== LOG PAGE ===== -->
+    <div class="page" id="page-log">
+      <div class="log-grid">
+        <div class="card log-main">
+          <div class="log-time-label">TIME OF OBSERVATION:</div>
+          <div class="log-time" id="log-clock">12:45 PM</div>
+
+          <!-- Sliders -->
+          <div class="slider-row">
+            <span class="slider-label">LOUD?</span>
+            <span class="slider-icon-left">🔇</span>
+            <div class="slider-wrap">
+              <input type="range" min="0" max="100" value="30" oninput="updateSlider(this,'loud')" id="sl-loud">
+            </div>
+            <span class="slider-icon-right">🔊</span>
+            <button class="save-btn unsaved" id="btn-loud" onclick="saveSlider('loud')">SAVE</button>
+          </div>
+
+          <div class="slider-row">
+            <span class="slider-label">BUSY?</span>
+            <span class="slider-icon-left">🧍</span>
+            <div class="slider-wrap">
+              <input type="range" min="0" max="100" value="55" oninput="updateSlider(this,'busy')" id="sl-busy">
+            </div>
+            <span class="slider-icon-right">👥</span>
+            <button class="save-btn saved" id="btn-busy" onclick="saveSlider('busy')">✔</button>
+          </div>
+
+          <div class="slider-row">
+            <span class="slider-label">SMELLY?</span>
+            <span class="slider-icon-left">🌸</span>
+            <div class="slider-wrap">
+              <input type="range" min="0" max="100" value="48" oninput="updateSlider(this,'smell')" id="sl-smell">
+            </div>
+            <span class="slider-icon-right">🗑</span>
+            <button class="save-btn unsaved" id="btn-smell" onclick="saveSlider('smell')">SAVE</button>
+          </div>
+
+          <div class="slider-row">
+            <span class="slider-label">BRIGHT?</span>
+            <span class="slider-icon-left">🌑</span>
+            <div class="slider-wrap">
+              <input type="range" min="0" max="100" value="45" oninput="updateSlider(this,'bright')" id="sl-bright">
+            </div>
+            <span class="slider-icon-right">☀️</span>
+            <button class="save-btn saved" id="btn-bright" onclick="saveSlider('bright')">✔</button>
+          </div>
+
+          <div class="slider-row">
+            <span class="slider-label">OUTLETS?</span>
+            <span class="slider-icon-left">📚</span>
+            <div class="slider-wrap">
+              <input type="range" min="0" max="100" value="35" oninput="updateSlider(this,'outlets')" id="sl-outlets">
+            </div>
+            <span class="slider-icon-right">🔌</span>
+            <button class="save-btn saved" id="btn-outlets" onclick="saveSlider('outlets')">✔</button>
+          </div>
+        </div>
+
+        <!-- Timer -->
+        <div class="card" style="display:flex;flex-direction:column;align-items:center;padding:24px 16px;gap:18px;">
+          <div class="donut-wrap">
+            <svg viewBox="0 0 120 120">
+              <circle class="donut-bg" cx="60" cy="60" r="54"/>
+              <circle class="donut-track" cx="60" cy="60" r="48"/>
+              <circle class="donut-prog" id="timer-ring" cx="60" cy="60" r="48"
+                stroke-dasharray="301.6" stroke-dashoffset="75"/>
+            </svg>
+            <div class="donut-center">
+              <div class="mode" id="timer-mode">STUDY</div>
+              <div class="session" id="timer-session-label">CURRENT SESSION</div>
+              <div class="mode" id="timer-display" style="font-size:1rem">00:00:00</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:20px;width:100%;justify-content:center;">
+            <div class="timer-stat">
+              <div class="ts-label">Current</div>
+              <div class="ts-val" id="t-current">00:00:00</div>
+            </div>
+            <div class="timer-stat">
+              <div class="ts-label">Goal</div>
+              <div class="ts-val" id="t-goal">00:55:00</div>
+            </div>
+          </div>
+          <div class="timer-stat" style="text-align:center;">
+            <div class="ts-label">Longest Study</div>
+            <div class="ts-val" id="t-longest">02:48:23</div>
+          </div>
+          <div class="timer-btns">
+            <button class="timer-btn start" id="timer-start-btn" onclick="toggleTimer()">▶ START</button>
+            <button class="timer-btn reset" onclick="resetTimer()">↺ RESET</button>
+          </div>
+          <!-- Goal setter -->
+          <div style="width:100%;text-align:center;">
+            <label style="font-size:0.75rem;font-weight:800;color:var(--blue-dark)">SET GOAL (min)</label><br>
+            <input type="number" id="goal-input" value="55" min="1" max="480"
+              style="width:80px;padding:5px 8px;border-radius:8px;border:2px solid var(--sky);font-family:Nunito;font-weight:800;font-size:1rem;text-align:center;margin-top:4px;"
+              onchange="setGoal(this.value)">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STATS PAGE ===== -->
+    <div class="page" id="page-stats">
+      <div class="stats-grid">
+        <div class="stats-main">
+          <!-- Heatmap -->
+          <div class="card">
+            <span class="card-title">📅 Study Activity</span>
+            <div class="heatmap-wrap">
+              <div id="heatmap-months" class="heatmap-months" style="display:flex;gap:0;padding-left:14px;"></div>
+              <div id="heatmap" class="heatmap-grid"></div>
+              <div class="hm-legend">
+                <span>Less</span>
+                <div class="hm-swatch" style="background:#ddeef7"></div>
+                <div class="hm-swatch" style="background:#b8dff7"></div>
+                <div class="hm-swatch" style="background:#6ec6f5"></div>
+                <div class="hm-swatch" style="background:#4a9fd4"></div>
+                <div class="hm-swatch" style="background:#1e5f8e"></div>
+                <span>More</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom stats -->
+          <div class="stats-bottom">
+            <!-- Daily Average -->
+            <div class="card" style="text-align:center;">
+              <div class="stat-label">📊 Daily Average</div>
+              <div class="daily-donut-wrap">
+                <svg viewBox="0 0 120 120">
+                  <circle cx="60" cy="60" r="48" fill="none" stroke="#ddeef7" stroke-width="12"/>
+                  <circle cx="60" cy="60" r="48" fill="none" stroke="#6ec6f5" stroke-width="8"
+                    stroke-dasharray="301.6" stroke-dashoffset="90" stroke-linecap="round"/>
+                  <circle cx="60" cy="60" r="48" fill="none" stroke="#1e5f8e" stroke-width="12"
+                    stroke-dasharray="301.6" stroke-dashoffset="150" stroke-linecap="round"/>
+                </svg>
+                <div class="daily-center">
+                  <div class="pct">70%</div>
+                  <div class="lbl">DAILY<br>AVERAGE</div>
+                </div>
+              </div>
+              <div style="font-size:0.75rem;color:#888;margin-top:6px;">of goal reached</div>
+            </div>
+
+            <!-- Favorite Locations mini map -->
+            <div class="card">
+              <div class="stat-label">📍 Favorite Locations</div>
+              <div class="fav-map">
+                <svg width="100%" height="100%" viewBox="0 0 200 100">
+                  <rect width="200" height="100" fill="#e8f2f9"/>
+                  <!-- Roads -->
+                  <line x1="0" y1="50" x2="200" y2="50" stroke="#ccc" stroke-width="3"/>
+                  <line x1="80" y1="0" x2="80" y2="100" stroke="#ccc" stroke-width="3"/>
+                  <line x1="140" y1="0" x2="140" y2="100" stroke="#ccc" stroke-width="2"/>
+                  <line x1="0" y1="25" x2="200" y2="25" stroke="#ddd" stroke-width="1.5"/>
+                  <line x1="0" y1="75" x2="200" y2="75" stroke="#ddd" stroke-width="1.5"/>
+                  <line x1="30" y1="0" x2="50" y2="100" stroke="#ddd" stroke-width="1.5"/>
+                  <line x1="160" y1="0" x2="180" y2="100" stroke="#ddd" stroke-width="1.5"/>
+                  <!-- Pins -->
+                  <text x="78" y="30" text-anchor="middle" font-size="14">📍</text>
+                  <text x="138" y="55" text-anchor="middle" font-size="14">📍</text>
+                  <text x="50" y="72" text-anchor="middle" font-size="12">📍</text>
+                  <text x="165" y="28" text-anchor="middle" font-size="11">📍</text>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Total Hours -->
+            <div class="card" style="text-align:center;display:flex;flex-direction:column;justify-content:center;">
+              <div class="stat-label">⏱ Total Hours Studied</div>
+              <div class="stat-big" id="total-hours">847</div>
+              <div class="stat-sub">THAT'S 35.3 DAYS! 🎉</div>
+            </div>
+
+            <!-- Extra stat -->
+            <div class="card" style="text-align:center;display:flex;flex-direction:column;justify-content:center;">
+              <div class="stat-label">🔥 Current Streak</div>
+              <div class="stat-big">14</div>
+              <div class="stat-sub">DAYS IN A ROW!</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="card" style="height:fit-content;">
+          <span class="card-title">🏆 Leaderboard</span>
+          <div id="leaderboard">
+            <div class="lb-row">
+              <div class="lb-rank">🥇</div>
+              <div class="lb-avatar">😎</div>
+              <div class="lb-name">Alex K.</div>
+              <div class="lb-pts">100</div>
+            </div>
+            <div class="lb-row">
+              <div class="lb-rank">🥈</div>
+              <div class="lb-avatar">🦊</div>
+              <div class="lb-name">Sam T.</div>
+              <div class="lb-pts">80</div>
+            </div>
+            <div class="lb-row">
+              <div class="lb-rank">🥉</div>
+              <div class="lb-avatar">🐱</div>
+              <div class="lb-name">Jordan M.</div>
+              <div class="lb-pts">50</div>
+            </div>
+            <div class="lb-row">
+              <div class="lb-rank" style="color:#888">4</div>
+              <div class="lb-avatar">🐸</div>
+              <div class="lb-name">Riley B.</div>
+              <div class="lb-pts" style="color:#888">38</div>
+            </div>
+            <div class="lb-row" style="background:var(--sky-light);border-radius:12px;">
+              <div class="lb-rank" style="color:#888">5</div>
+              <div class="lb-avatar">⭐</div>
+              <div class="lb-name" style="color:var(--blue-dark)">You</div>
+              <div class="lb-pts">25</div>
+            </div>
+          </div>
+          <div class="lb-title">LEADERBOARD</div>
+
+          <div style="margin-top:16px;padding-top:14px;border-top:2px solid var(--sky);">
+            <div class="stat-label" style="text-align:center">🎯 Weekly Goal</div>
+            <div style="background:var(--sky-light);border-radius:10px;height:14px;margin:8px 0;overflow:hidden;">
+              <div style="background:linear-gradient(90deg,var(--blue),var(--accent));height:100%;width:62%;border-radius:10px;transition:width 0.5s"></div>
+            </div>
+            <div style="text-align:center;font-size:0.78rem;font-weight:800;color:var(--blue)">12.4 / 20 hrs this week</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- end main -->
+
+  <!-- Bottom Nav (mobile) -->
+  <div class="bottomnav">
+    <div class="bottomnav-btn active" id="bnav-map" onclick="showPage('map')">
+      <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      MAP
+    </div>
+    <div class="bottomnav-btn" id="bnav-log" onclick="showPage('log')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4" fill="white"/></svg>
+      LOG
+    </div>
+    <div class="bottomnav-btn" id="bnav-stats" onclick="showPage('stats')">
+      <svg viewBox="0 0 24 24"><path d="M5 20h2v-8H5v8zm4 0h2V4H9v16zm4 0h2v-4h-2v4zm4 0h2v-12h-2v12z"/></svg>
+      STATS
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">Saved! ✔</div>
 
 <script>
-function goPage(n){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));document.getElementById('page-'+n).classList.add('active');document.getElementById('t-'+n).classList.add('active');}
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200);}
-function toggleSeat(el,l){const f='#8FA68A',k='#C9877A';const iF=el.getAttribute('fill')===f;el.setAttribute('fill',iF?k:f);toast(iF?l+' — marked occupied':l+' — now free');}
-const rNames=['Café Floor','Quiet Zone','Collab Space','Study Pods'];
-let curRoom=0,chartType='popular';
-function selectRoom(i,el){curRoom=i;document.querySelectorAll('.rtab').forEach(r=>r.classList.remove('active'));el.classList.add('active');document.getElementById('fp-rname').textContent=rNames[i];renderChart();renderVibes();toast('Viewing — '+rNames[i]);}
-const BUSY=[[8,12,18,22,28,32,38,45,52,58,62,55,48,40,32,25,18],[5,8,12,16,20,26,34,42,50,55,52,46,38,30,22,15,10],[12,16,22,28,34,38,42,48,55,60,58,50,42,34,26,20,14],[6,9,13,17,22,28,36,44,50,54,50,44,36,28,20,14,8]];
-const NOIS=[[3,5,10,15,20,26,32,38,42,48,50,46,40,34,26,18,10],[2,4,7,12,16,20,26,32,38,42,40,36,30,24,16,10,6],[8,12,16,22,28,34,40,46,52,56,54,48,40,32,24,16,10],[4,6,10,14,18,24,30,36,42,46,44,38,32,24,16,10,6]];
-const COZY=[[40,42,44,46,48,50,52,54,56,58,60,58,55,52,50,48,45],[35,38,40,42,45,48,50,52,54,56,54,52,50,46,42,38,34],[30,32,34,36,40,44,48,52,55,58,56,52,48,44,40,36,32],[38,40,42,44,46,50,54,56,58,60,58,54,50,46,42,38,34]];
-const CLBLS=['9a','10','11','12p','1','2','3','4','5','6','7','8','9','10','11','12','1a'];
-const DNAMES=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-let dayOff=0;
-function shiftDay(d){dayOff=(dayOff+d+7)%7;document.getElementById('day-lbl').textContent=dayOff===0?'Today':DNAMES[(new Date().getDay()+dayOff)%7];renderChart();}
-function switchChart(t,el){chartType=t;document.querySelectorAll('.ctab').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderChart();}
-const CCOLS={popular:'#8FA68A',noise:'#C9877A',cozy:'#C4A46B'};
-function renderChart(){const d=chartType==='popular'?BUSY[curRoom]:chartType==='noise'?NOIS[curRoom]:COZY[curRoom];const col=CCOLS[chartType];const el=document.getElementById('main-chart'),lb=document.getElementById('chart-lbs');const hr=new Date().getHours();const ni=Math.max(0,Math.min(d.length-1,hr-9));const mx=Math.max(...d);el.innerHTML='';lb.innerHTML='';d.forEach((v,i)=>{const w=document.createElement('div');w.className='bc-col';const b=document.createElement('div');b.className='bc-bar'+(i===ni&&dayOff===0?' now':'');b.style.height=(v/mx*100)+'%';b.style.background=i===ni&&dayOff===0?'var(--ink)':col;b.title=CLBLS[i]+': '+v+'%';b.onclick=()=>toast(CLBLS[i]+' — '+v+'% busy');w.appendChild(b);el.appendChild(w);const l=document.createElement('div');l.style.cssText='flex:1;text-align:center';l.innerHTML='<span class="bc-l">'+(i%3===0?CLBLS[i]:'')+'</span>';lb.appendChild(l);});}
-const VIBES=[{l:'Noise',c:'#C9877A',v:[28,55,70,40]},{l:'Busyness',c:'#C9877A',v:[45,62,75,38]},{l:'Light',c:'#C4A46B',v:[70,55,65,80]},{l:'Outlets',c:'#8FA68A',v:[40,60,55,90]},{l:'Coziness',c:'#7FA8BC',v:[85,70,60,55]}];
-function renderVibes(){document.getElementById('vibe-rows').innerHTML=VIBES.map(v=>`<div class="vibe-i"><span class="vibe-n">${v.l}</span><div class="vibe-t"><div class="vibe-f" style="width:${v.v[curRoom]}%;background:${v.c}"></div></div><span class="vibe-p">${v.v[curRoom]}%</span></div>`).join('');}
-const SL_LBLS={loud:['Silent','Whisper','Quiet','Soft hum','Moderate','Lively','Loud'],busy:['Empty','Barely any','Spacious','Moderate','Fairly busy','Busy','Packed'],bright:['Very dark','Dim','Low light','Moderate','Well-lit','Bright','Very bright'],outlets:['None','Barely any','A couple','Some','Moderate','Many','Plenty'],air:['Very stuffy','Stuffy','Stale','Neutral','Fresh','Very fresh','Crisp']};
-const SL_C={loud:'var(--sky)',busy:'var(--rose)',bright:'var(--flax)',outlets:'var(--sage)',air:'var(--sage)'};
-function updateSl(el,k){const v=parseInt(el.value);const lbls=SL_LBLS[k];const idx=Math.min(lbls.length-1,Math.floor(v/(100/(lbls.length-1))));document.getElementById('slv-'+k).textContent=lbls[idx];el.style.background=`linear-gradient(to right,${SL_C[k]} ${v}%,var(--linen) ${v}%)`;const btn=document.getElementById('svb-'+k);btn.textContent='Log it';btn.className='log-btn lp';btn.onclick=()=>saveSl(k);document.getElementById('slc-'+k).classList.remove('logged');}
-function saveSl(k){const btn=document.getElementById('svb-'+k);btn.textContent='✓ Logged';btn.className='log-btn ls';btn.onclick=null;document.getElementById('slc-'+k).classList.add('logged');toast('Observation saved ✓');}
-function initSliders(){['loud','busy','bright','outlets','air'].forEach(k=>{const el=document.getElementById('sl-'+k);if(el)el.style.background=`linear-gradient(to right,${SL_C[k]} ${el.value}%,var(--linen) ${el.value}%)`;});}
-let tSecs=0,tGoal=55*60,tRunning=false,tInterval=null,tBest=2*3600+48*60;
-function fmt(s){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),se=s%60;return`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(se).padStart(2,'0')}`;}
-function fmtS(s){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60);return h?`${h}:${String(m).padStart(2,'0')}`:`${m}m`;}
-function updateTimer(){document.getElementById('rc-time').textContent=fmt(tSecs);document.getElementById('ts-goal').textContent=fmtS(tGoal);document.getElementById('ts-best').textContent=fmtS(tBest);const p=Math.min(1,tSecs/tGoal);document.getElementById('t-ring').style.strokeDashoffset=326.7*(1-p);}
-function toggleTimer(){if(tRunning){clearInterval(tInterval);tRunning=false;document.getElementById('t-play').textContent='▶ Start';if(tSecs>tBest){tBest=tSecs;toast('New personal best 🎉');}updateTimer();}else{tRunning=true;document.getElementById('t-play').textContent='⏸ Pause';tInterval=setInterval(()=>{tSecs++;updateTimer();if(tSecs===tGoal)toast('Goal reached! 🌿');},1000);}}
-function resetTimer(){clearInterval(tInterval);tRunning=false;tSecs=0;document.getElementById('t-play').textContent='▶ Start';updateTimer();}
-function setGoal(v){tGoal=parseInt(v)*60;updateTimer();}
-function setMode(m,el){document.getElementById('rc-mode').textContent=m.toUpperCase();document.querySelectorAll('.mo').forEach(o=>o.classList.remove('active'));el.classList.add('active');}
-function updateClock(){const n=new Date(),h=n.getHours()%12||12,m=String(n.getMinutes()).padStart(2,'0'),ap=n.getHours()>=12?'pm':'am';const el=document.getElementById('log-clock');if(el)el.textContent=`${h}:${m} ${ap}`;}
-updateClock();setInterval(updateClock,30000);
-function saveNote(){toast('Note saved ✓');document.getElementById('note-area').style.borderColor='var(--sage)';}
-function buildHeatmap(){const grid=document.getElementById('hm-grid'),mrow=document.getElementById('hm-months');grid.innerHTML='';mrow.innerHTML='';const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];const weeks=38,today=new Date();let lastM=-1;for(let w=0;w<weeks;w++){const d=new Date(today);d.setDate(d.getDate()-(weeks-w)*7);if(d.getMonth()!==lastM){lastM=d.getMonth();const s=document.createElement('span');s.className='hm-ml';s.textContent=months[d.getMonth()];s.style.width=(Math.min(weeks-w,5)*15)+'px';s.style.flexShrink='0';mrow.appendChild(s);}}for(let i=0;i<weeks*7;i++){const r=Math.random();const l=r<.32?0:r<.52?1:r<.68?2:r<.82?3:4;const c=document.createElement('div');c.className='hm-c h'+l;const dAgo=weeks*7-i;const d=new Date(today);d.setDate(d.getDate()-dAgo);const hrs=(l*1.8).toFixed(1);c.title=`${d.toDateString()} — ${hrs>0?hrs+'h':'Rest'}`;c.onclick=()=>toast(`${d.toDateString()}: ${hrs>0?hrs+'h':'Rest day'}`);grid.appendChild(c);}}
-function buildWeekly(){const hrs=[1.2,2.8,0,3.5,2.1,4.2,3.8];const D=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];const C=['#C4A46B','#8FA68A','#E0D8C8','#C9877A','#8FA68A','#7FA8BC','#B87D8C'];const today=new Date().getDay(),mx=Math.max(...hrs);const el=document.getElementById('wk-bars'),lb=document.getElementById('wk-dlbls');el.innerHTML='';lb.innerHTML='';hrs.forEach((h,i)=>{const col=document.createElement('div');col.className='wk-col';const bar=document.createElement('div');bar.className='wk-bar'+(i===today?' today':'');bar.style.height=mx>0?(h/mx*94)+'%':'3px';bar.style.background=C[i];bar.title=`${D[i]}: ${h}h`;bar.onclick=()=>toast(`${D[i]}: ${h>0?h+'h':'Rest day'}`);const hv=document.createElement('div');hv.className='wk-h';hv.textContent=h?h+'h':'—';col.appendChild(bar);col.appendChild(hv);el.appendChild(col);const dl=document.createElement('div');dl.style.cssText='flex:1;text-align:center';dl.innerHTML=`<span class="wk-d">${D[i]}</span>`;lb.appendChild(dl);});}
-function buildTopSpots(){const spots=[{n:'Central Library',s:'Café floor',h:312,p:100,c:'#8FA68A',i:'🏛'},{n:'Blue Bottle',s:'Window seat',h:198,p:63,c:'#7FA8BC',i:'☕'},{n:'Riverside Hall',s:'Quiet zone',h:145,p:46,c:'#C9877A',i:'📖'},{n:'Co-working Hub',s:'Open desks',h:92,p:29,c:'#C4A46B',i:'💻'},{n:'Home Office',s:'Desk',h:62,p:20,c:'#B87D8C',i:'🏠'}];document.getElementById('top-spots').innerHTML=spots.map((s,i)=>`<div class="spot" onclick="toast('${s.n} — ${s.h}h total')"><span class="spot-rk">${['①','②','③','④','⑤'][i]}</span><span class="spot-ic">${s.i}</span><div class="spot-in"><div class="spot-nm">${s.n}</div><div class="spot-sb">${s.s}</div><div class="spot-bw"><div class="spot-bf" style="width:${s.p}%;background:${s.c}"></div></div></div><span class="spot-h">${s.h}h</span></div>`).join('');}
-function buildLeaderboard(){const lb=[{n:'Sophie M.',s:'847h · 12 spots',pts:2840,av:'🌿',me:false},{n:'You',s:'847h · streak 14',pts:2840,av:'☕',me:true},{n:'Amara K.',s:'801h · 9 spots',pts:2680,av:'📚',me:false},{n:'Ji-won L.',s:'788h · 11 spots',pts:2620,av:'🌸',me:false},{n:'Priya R.',s:'744h · 8 spots',pts:2480,av:'✦',me:false}];document.getElementById('leaderboard').innerHTML=lb.map((r,i)=>`<div class="lb-row${r.me?' me':''}" onclick="toast('${r.n} — ${r.pts} pts')"><span class="lb-rk">${i+1}</span><div class="lb-av">${r.av}</div><div class="lb-in"><div class="lb-nm">${r.n}${r.me?' <span style="font-size:.52rem;color:var(--sage-dk);font-weight:600;letter-spacing:1px;text-transform:uppercase">you</span>':''}</div><div class="lb-sb">${r.s}</div></div><span class="lb-pt">${r.pts}</span></div>`).join('');}
-function buildAchievements(){const a=[{i:'🌅',n:'Early Bird',e:true},{i:'🔥',n:'14-day Streak',e:true},{i:'🏛',n:'Explorer',e:true},{i:'⏱',n:'100h Club',e:true},{i:'📖',n:'Deep Focus',e:true},{i:'🌿',n:'Quiet Seeker',e:false},{i:'☕',n:'Café Regular',e:false},{i:'🌙',n:'Night Owl',e:false},{i:'✦',n:'Top 10',e:false}];document.getElementById('achievements').innerHTML=a.map(x=>`<div class="ach${x.e?' on':''}" onclick="toast('${x.n}${x.e?'':' — not yet unlocked'}')"><span class="ai">${x.i}</span><div class="an">${x.n}</div></div>`).join('');}
-function buildPatterns(){const p=[{i:'⏰',l:'Peak time',v:'6 – 9 PM'},{i:'⌛',l:'Avg session',v:'2.4 hrs'},{i:'📅',l:'Best day',v:'Friday'},{i:'📍',l:'Fav spot',v:'Library'},{i:'🔁',l:'Sessions',v:'184 total'}];document.getElementById('patterns').innerHTML=p.map(x=>`<div class="pat"><span class="pat-i">${x.i}</span><span class="pat-l">${x.l}</span><span class="pat-v">${x.v}</span></div>`).join('');}
-renderChart();renderVibes();initSliders();buildHeatmap();buildWeekly();buildTopSpots();buildLeaderboard();buildAchievements();buildPatterns();updateTimer();
+// ===== PAGE NAVIGATION =====
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.topbar-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.bottomnav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const tabs = [...document.querySelectorAll('.topbar-tab')];
+  const map = {map:0,log:1,stats:2};
+  if (tabs[map[name]]) tabs[map[name]].classList.add('active');
+  const bn = document.getElementById('bnav-' + name);
+  if (bn) bn.classList.add('active');
+}
+
+// ===== CHARTS =====
+function makeChart(id, data, color='#4a9fd4', highlight=null) {
+  const el = document.getElementById(id);
+  el.innerHTML = '';
+  const max = Math.max(...data);
+  data.forEach((v, i) => {
+    const bar = document.createElement('div');
+    bar.className = 'bar' + (i === highlight ? ' active-bar' : '');
+    bar.style.height = (v / max * 100) + '%';
+    bar.style.background = i === highlight ? '#1e5f8e' : color;
+    bar.title = v + ' people';
+    el.appendChild(bar);
+  });
+}
+
+const popularData = [
+  [12,18,22,20,24,26,28,32,42,50,55,48,38,30,22],
+  [8,10,14,18,22,28,35,42,48,52,45,38,30,20,15],
+  [15,20,28,32,38,40,36,30,24,20,18,22,28,34,40],
+  [5,8,12,16,22,30,40,48,52,48,40,32,24,18,10],
+];
+const noiseData = [
+  [5,8,15,22,28,32,35,40,38,42,45,48,50,46,40],
+  [8,12,18,25,30,28,32,38,42,40,36,32,28,22,18],
+  [10,15,20,28,35,38,42,45,48,44,38,32,26,20,14],
+  [6,10,14,20,26,32,38,44,46,42,36,28,22,16,10],
+];
+const cozyData = [
+  [30,32,35,38,40,42,45,48,50,52,50,48,45,42,38],
+  [28,30,32,35,38,40,42,45,48,50,48,45,40,35,30],
+  [35,38,40,42,45,48,50,52,54,52,48,44,40,36,32],
+  [25,28,30,32,35,38,42,46,50,48,44,40,35,30,25],
+];
+
+let currentRoom = 0;
+let currentDay = 0;
+const days = ['Today','Mon','Tue','Wed','Thu','Fri','Sat'];
+let currentDayIdx = 0;
+
+function renderCharts() {
+  const hour = new Date().getHours();
+  const barIdx = Math.min(Math.floor((hour - 6) / 1), 14);
+  makeChart('popular-chart', popularData[currentRoom], '#4a9fd4', barIdx);
+  makeChart('noise-chart', noiseData[currentRoom], '#6ec6f5', barIdx);
+  makeChart('cozy-chart', cozyData[currentRoom], '#1e5f8e', barIdx);
+}
+
+function selectRoom(idx, el) {
+  currentRoom = idx;
+  document.querySelectorAll('.room-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderCharts();
+  showToast('Viewing Room ' + (idx+1));
+}
+
+function prevDay() {
+  currentDayIdx = (currentDayIdx - 1 + days.length) % days.length;
+  document.getElementById('day-label').textContent = days[currentDayIdx];
+  renderCharts();
+}
+function nextDay() {
+  currentDayIdx = (currentDayIdx + 1) % days.length;
+  document.getElementById('day-label').textContent = days[currentDayIdx];
+  renderCharts();
+}
+
+// ===== SEAT TOGGLE =====
+function toggleSeat(el) {
+  const isGreen = el.getAttribute('fill') === '#5fcb7a';
+  el.setAttribute('fill', isGreen ? '#f47b7b' : '#5fcb7a');
+  showToast(isGreen ? 'Seat marked occupied' : 'Seat marked available');
+}
+
+// ===== LOG SLIDERS =====
+function updateSlider(el, name) {
+  const val = el.value + '%';
+  el.style.setProperty('--val', val);
+  const btn = document.getElementById('btn-' + name);
+  btn.textContent = 'SAVE';
+  btn.className = 'save-btn unsaved';
+}
+
+function saveSlider(name) {
+  const btn = document.getElementById('btn-' + name);
+  btn.textContent = '✔';
+  btn.className = 'save-btn saved';
+  showToast('Saved! ✔');
+}
+
+// ===== CLOCK =====
+function updateClock() {
+  const now = new Date();
+  const h = now.getHours(), m = now.getMinutes();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const hh = h % 12 || 12;
+  const mm = String(m).padStart(2,'0');
+  document.getElementById('log-clock').textContent = `${hh}:${mm} ${ampm}`;
+}
+updateClock();
+setInterval(updateClock, 10000);
+
+// ===== TIMER =====
+let timerInterval = null, timerSeconds = 0, timerRunning = false;
+let goalSeconds = 55 * 60, longestSeconds = 2*3600+48*60+23;
+
+function fmtTime(s) {
+  const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+
+function updateTimerUI() {
+  document.getElementById('timer-display').textContent = fmtTime(timerSeconds);
+  document.getElementById('t-current').textContent = fmtTime(timerSeconds);
+  document.getElementById('t-goal').textContent = fmtTime(goalSeconds);
+  document.getElementById('t-longest').textContent = fmtTime(longestSeconds);
+  // Update ring
+  const pct = Math.min(timerSeconds / goalSeconds, 1);
+  const circ = 301.6;
+  const offset = circ - pct * circ;
+  document.getElementById('timer-ring').style.strokeDashoffset = offset;
+}
+
+function toggleTimer() {
+  if (timerRunning) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    document.getElementById('timer-start-btn').textContent = '▶ START';
+    document.getElementById('timer-start-btn').className = 'timer-btn start';
+    if (timerSeconds > longestSeconds) longestSeconds = timerSeconds;
+    updateTimerUI();
+  } else {
+    timerRunning = true;
+    document.getElementById('timer-start-btn').textContent = '⏸ PAUSE';
+    document.getElementById('timer-start-btn').className = 'timer-btn stop';
+    timerInterval = setInterval(() => {
+      timerSeconds++;
+      if (timerSeconds > longestSeconds) longestSeconds = timerSeconds;
+      updateTimerUI();
+      if (timerSeconds === goalSeconds) showToast('🎉 Goal reached! Great work!');
+    }, 1000);
+  }
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerSeconds = 0;
+  document.getElementById('timer-start-btn').textContent = '▶ START';
+  document.getElementById('timer-start-btn').className = 'timer-btn start';
+  updateTimerUI();
+}
+
+function setGoal(val) {
+  goalSeconds = parseInt(val) * 60;
+  updateTimerUI();
+}
+
+updateTimerUI();
+
+// ===== HEATMAP =====
+function buildHeatmap() {
+  const grid = document.getElementById('heatmap');
+  const monthsEl = document.getElementById('heatmap-months');
+  grid.innerHTML = ''; monthsEl.innerHTML = '';
+  const levels = ['','l1','l2','l3','l4'];
+  const today = new Date();
+  const weeks = 36;
+  const total = weeks * 7;
+  // Month labels
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let lastMonth = -1;
+  for (let w = 0; w < weeks; w++) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - (weeks - w) * 7);
+    if (d.getMonth() !== lastMonth) {
+      lastMonth = d.getMonth();
+      const span = document.createElement('span');
+      span.className = 'heatmap-month-label';
+      span.textContent = months[d.getMonth()];
+      span.style.flex = '1';
+      monthsEl.appendChild(span);
+    }
+  }
+  for (let i = 0; i < total; i++) {
+    const cell = document.createElement('div');
+    const rand = Math.random();
+    const lvl = rand < 0.3 ? 0 : rand < 0.5 ? 1 : rand < 0.7 ? 2 : rand < 0.85 ? 3 : 4;
+    cell.className = 'hm-cell ' + (levels[lvl] || '');
+    const daysAgo = total - i;
+    const d = new Date(today); d.setDate(d.getDate() - daysAgo);
+    cell.title = d.toDateString() + ': ' + (lvl * 2) + ' hrs';
+    cell.onclick = () => showToast(cell.title);
+    grid.appendChild(cell);
+  }
+}
+buildHeatmap();
+
+// ===== TOAST =====
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ===== INIT =====
+renderCharts();
+
+// Init slider fills
+document.querySelectorAll('input[type=range]').forEach(el => {
+  el.style.setProperty('--val', el.value + '%');
+});
 </script>
 </body>
 </html>
