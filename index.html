@@ -195,22 +195,58 @@
   .stats-grid { display: grid; grid-template-columns: 1fr 260px; gap: 14px; }
   .stats-main { display: flex; flex-direction: column; gap: 14px; }
 
+  /* Hero tins row */
+  .stats-hero { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+  .stat-tin {
+    background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 14px 10px; text-align: center; backdrop-filter: blur(8px);
+    border-top: 4px solid var(--blue);
+  }
+  .stat-tin .tin-icon { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+  .stat-tin .tin-num { font-family: 'Fredoka One', cursive; font-size: 2rem; color: var(--blue-dark); line-height:1; }
+  .stat-tin .tin-lbl { font-size: 0.62rem; font-weight: 800; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-top: 3px; }
+
   /* Heatmap */
   .heatmap-wrap { overflow-x: auto; }
   .heatmap-months { display: flex; gap: 0; margin-bottom: 4px; }
   .heatmap-month-label { font-size: 0.7rem; font-weight: 700; color: #888; }
-  .heatmap-grid { display: grid; grid-template-rows: repeat(7, 14px); grid-auto-flow: column; gap: 3px; }
+  .heatmap-grid { display: grid; grid-template-rows: repeat(7, 13px); grid-auto-flow: column; gap: 3px; min-width: 480px; }
   .hm-cell {
-    width: 14px; height: 14px; border-radius: 3px;
+    width: 13px; height: 13px; border-radius: 2px;
     background: #ddeef7; cursor: pointer; transition: transform 0.1s;
   }
-  .hm-cell:hover { transform: scale(1.3); }
+  .hm-cell:hover { transform: scale(1.35); }
   .hm-cell.l1 { background: #b8dff7; }
   .hm-cell.l2 { background: #6ec6f5; }
   .hm-cell.l3 { background: #4a9fd4; }
   .hm-cell.l4 { background: #1e5f8e; }
-  .hm-legend { display: flex; align-items: center; gap: 5px; margin-top: 6px; font-size: 0.7rem; color: #888; font-weight: 700; justify-content: flex-end; }
-  .hm-swatch { width: 14px; height: 14px; border-radius: 3px; }
+  .hm-legend { display: flex; align-items: center; gap: 5px; margin-top: 6px; font-size: 0.7rem; color: #888; font-weight: 700; justify-content: flex-end; min-width: 480px; }
+  .hm-swatch { width: 13px; height: 13px; border-radius: 2px; }
+
+  /* Weekly bars */
+  .weekly-chart { display: flex; align-items: flex-end; gap: 6px; height: 90px; margin: 10px 0 4px; }
+  .wk-col { flex:1; display:flex; flex-direction:column; align-items:center; height:100%; justify-content:flex-end; }
+  .wk-bar { width:100%; border-radius:4px 4px 0 0; min-height:4px; cursor:pointer; transition:all .2s; }
+  .wk-bar:hover { filter: brightness(0.85); }
+  .wk-bar.today-bar { outline: 2px solid var(--navy); outline-offset: 2px; }
+  .wk-lbl { font-size:0.58rem; font-weight:800; color:#888; margin-top:4px; text-transform:uppercase; }
+  .wk-h { font-size:0.6rem; font-weight:800; color:var(--navy); }
+  .wk-avg { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:10px; }
+  .wk-avg-b { background:var(--sky-light); border-radius:10px; padding:8px 6px; text-align:center; }
+  .wk-avg-b .wn { font-family:'Fredoka One',cursive; font-size:1.1rem; color:var(--blue-dark); }
+  .wk-avg-b .wl { font-size:0.58rem; font-weight:800; color:#888; text-transform:uppercase; letter-spacing:.5px; }
+
+  /* Top spots */
+  .spot-row { display:flex; align-items:center; gap:10px; padding:8px; border-radius:12px; margin-bottom:5px; transition:background .15s; cursor:pointer; }
+  .spot-row:hover { background: var(--sky-light); }
+  .spot-rank { font-family:'Fredoka One',cursive; font-size:1.1rem; min-width:22px; text-align:center; }
+  .spot-ico { font-size:1.1rem; }
+  .spot-info { flex:1; }
+  .spot-name { font-weight:800; font-size:0.82rem; color:var(--navy); }
+  .spot-sub { font-size:0.62rem; color:#888; font-weight:700; }
+  .spot-bar-w { height:4px; background:var(--sky-light); border-radius:2px; margin-top:3px; }
+  .spot-bar-f { height:100%; border-radius:2px; transition:width .7s ease; }
+  .spot-hrs { font-family:'Fredoka One',cursive; font-size:0.9rem; color:var(--blue); }
 
   /* Bottom stats grid */
   .stats-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -227,9 +263,22 @@
 
   /* Mini map */
   .fav-map { background: #e8f0f7; border-radius: 12px; height: 100px; position: relative; overflow: hidden; }
-  .map-roads { position: absolute; inset: 0; }
-  .map-pin { position: absolute; font-size: 1.4rem; transform: translate(-50%, -100%); cursor: pointer; transition: transform 0.2s; }
-  .map-pin:hover { transform: translate(-50%, -100%) scale(1.3); }
+
+  /* Achievements */
+  .ach-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; }
+  .ach-item { background:var(--sky-light); border-radius:12px; padding:10px 6px; text-align:center; cursor:pointer; transition:all .15s; }
+  .ach-item:hover { transform:translateY(-2px); box-shadow:var(--shadow); }
+  .ach-item.earned { background:linear-gradient(135deg,#fff9c4,#fef3a0); border:2px solid #f4c842; }
+  .ach-item .ai { font-size:1.3rem; display:block; margin-bottom:3px; }
+  .ach-item .an { font-size:0.56rem; font-weight:800; color:#888; text-transform:uppercase; letter-spacing:.3px; }
+  .ach-item.earned .an { color:#8a6a00; }
+
+  /* Patterns */
+  .pat-row { display:flex; align-items:center; gap:9px; padding:8px; border-radius:10px; border:1.5px solid var(--sky-light); margin-bottom:5px; transition:background .15s; }
+  .pat-row:hover { background:var(--sky-light); }
+  .pat-icon { font-size:1rem; }
+  .pat-lbl { flex:1; font-size:0.68rem; font-weight:800; color:#888; text-transform:uppercase; letter-spacing:.5px; }
+  .pat-val { font-family:'Fredoka One',cursive; font-size:0.9rem; color:var(--blue-dark); }
 
   /* Leaderboard */
   .lb-row {
@@ -248,8 +297,16 @@
     .map-grid, .log-grid, .stats-grid { grid-template-columns: 1fr; }
     .map-main { grid-row: auto; }
     .stats-bottom { grid-template-columns: 1fr 1fr; }
+    .stats-hero { grid-template-columns: repeat(2,1fr); }
     .topbar-title { font-size: 1.2rem; }
     .topbar-tab { padding: 6px 10px; font-size: 0.75rem; }
+  }
+  @media (max-width: 480px) {
+    .stats-hero { grid-template-columns: repeat(2,1fr); }
+    .stats-bottom { grid-template-columns: 1fr; }
+    .wk-avg { grid-template-columns: repeat(3,1fr); }
+    .ach-grid { grid-template-columns: repeat(3,1fr); }
+    .stat-big { font-size: 2.8rem; }
   }
 
   /* ===== ANIMATIONS ===== */
@@ -482,7 +539,7 @@
               <input type="range" min="0" max="100" value="55" oninput="updateSlider(this,'busy')" id="sl-busy">
             </div>
             <span class="slider-icon-right">👥</span>
-            <button class="save-btn saved" id="btn-busy" onclick="saveSlider('busy')">✔</button>
+            <button class="save-btn unsaved" id="btn-busy" onclick="saveSlider('busy')">SAVE</button>
           </div>
 
           <div class="slider-row">
@@ -502,7 +559,7 @@
               <input type="range" min="0" max="100" value="45" oninput="updateSlider(this,'bright')" id="sl-bright">
             </div>
             <span class="slider-icon-right">☀️</span>
-            <button class="save-btn saved" id="btn-bright" onclick="saveSlider('bright')">✔</button>
+            <button class="save-btn unsaved" id="btn-bright" onclick="saveSlider('bright')">SAVE</button>
           </div>
 
           <div class="slider-row">
@@ -512,7 +569,7 @@
               <input type="range" min="0" max="100" value="35" oninput="updateSlider(this,'outlets')" id="sl-outlets">
             </div>
             <span class="slider-icon-right">🔌</span>
-            <button class="save-btn saved" id="btn-outlets" onclick="saveSlider('outlets')">✔</button>
+            <button class="save-btn unsaved" id="btn-outlets" onclick="saveSlider('outlets')">SAVE</button>
           </div>
         </div>
 
@@ -538,7 +595,7 @@
             </div>
             <div class="timer-stat">
               <div class="ts-label">Goal</div>
-              <div class="ts-val" id="t-goal">00:55:00</div>
+              <div class="ts-val" id="t-goal">00:30:00</div>
             </div>
           </div>
           <div class="timer-stat" style="text-align:center;">
@@ -552,7 +609,7 @@
           <!-- Goal setter -->
           <div style="width:100%;text-align:center;">
             <label style="font-size:0.75rem;font-weight:800;color:var(--blue-dark)">SET GOAL (min)</label><br>
-            <input type="number" id="goal-input" value="55" min="1" max="480"
+            <input type="number" id="goal-input" value="30" min="1" max="47"
               style="width:80px;padding:5px 8px;border-radius:8px;border:2px solid var(--sky);font-family:Nunito;font-weight:800;font-size:1rem;text-align:center;margin-top:4px;"
               onchange="setGoal(this.value)">
           </div>
@@ -564,11 +621,39 @@
     <div class="page" id="page-stats">
       <div class="stats-grid">
         <div class="stats-main">
+
+          <!-- Hero tins -->
+          <div class="stats-hero">
+            <div class="stat-tin" style="border-top-color:#4a9fd4">
+              <span class="tin-icon">⏱</span>
+              <div class="tin-num">847</div>
+              <div class="tin-lbl">Total Hours</div>
+            </div>
+            <div class="stat-tin" style="border-top-color:#f4a44a">
+              <span class="tin-icon">🔥</span>
+              <div class="tin-num">14</div>
+              <div class="tin-lbl">Day Streak</div>
+            </div>
+            <div class="stat-tin" style="border-top-color:#c97a7a">
+              <span class="tin-icon">📍</span>
+              <div class="tin-num">12</div>
+              <div class="tin-lbl">Locations</div>
+            </div>
+            <div class="stat-tin" style="border-top-color:#5fcb7a">
+              <span class="tin-icon">⭐</span>
+              <div class="tin-num">62</div>
+              <div class="tin-lbl">XP This Week</div>
+            </div>
+          </div>
+
           <!-- Heatmap -->
           <div class="card">
-            <span class="card-title">📅 Study Activity</span>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <span class="card-title" style="margin-bottom:0">📅 Study Activity</span>
+              <span style="font-size:0.68rem;font-weight:800;color:#888;background:var(--sky-light);padding:3px 10px;border-radius:20px;">Last 9 months</span>
+            </div>
             <div class="heatmap-wrap">
-              <div id="heatmap-months" class="heatmap-months" style="display:flex;gap:0;padding-left:14px;"></div>
+              <div id="heatmap-months" class="heatmap-months" style="display:flex;gap:0;padding-left:14px;min-width:480px;"></div>
               <div id="heatmap" class="heatmap-grid"></div>
               <div class="hm-legend">
                 <span>Less</span>
@@ -582,9 +667,29 @@
             </div>
           </div>
 
+          <!-- Weekly chart -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+              <span class="card-title" style="margin-bottom:0">📈 This Week</span>
+              <span style="font-size:0.68rem;font-weight:800;color:var(--green);background:#eaffef;padding:3px 10px;border-radius:20px;">+18% vs last week</span>
+            </div>
+            <div class="weekly-chart" id="weekly-chart"></div>
+            <div style="display:flex;" id="weekly-labels"></div>
+            <div class="wk-avg">
+              <div class="wk-avg-b"><div class="wn">2.4h</div><div class="wl">Daily Avg</div></div>
+              <div class="wk-avg-b"><div class="wn">6 PM</div><div class="wl">Peak Time</div></div>
+              <div class="wk-avg-b"><div class="wn">94%</div><div class="wl">Goal Rate</div></div>
+            </div>
+          </div>
+
+          <!-- Top Spots -->
+          <div class="card">
+            <span class="card-title">📍 Your Top Spots</span>
+            <div id="top-spots"></div>
+          </div>
+
           <!-- Bottom stats -->
           <div class="stats-bottom">
-            <!-- Daily Average -->
             <div class="card" style="text-align:center;">
               <div class="stat-label">📊 Daily Average</div>
               <div class="daily-donut-wrap">
@@ -597,95 +702,73 @@
                 </svg>
                 <div class="daily-center">
                   <div class="pct">70%</div>
-                  <div class="lbl">DAILY<br>AVERAGE</div>
+                  <div class="lbl">DAILY<br>AVG</div>
                 </div>
               </div>
               <div style="font-size:0.75rem;color:#888;margin-top:6px;">of goal reached</div>
             </div>
-
-            <!-- Favorite Locations mini map -->
-            <div class="card">
-              <div class="stat-label">📍 Favorite Locations</div>
-              <div class="fav-map">
-                <svg width="100%" height="100%" viewBox="0 0 200 100">
-                  <rect width="200" height="100" fill="#e8f2f9"/>
-                  <!-- Roads -->
-                  <line x1="0" y1="50" x2="200" y2="50" stroke="#ccc" stroke-width="3"/>
-                  <line x1="80" y1="0" x2="80" y2="100" stroke="#ccc" stroke-width="3"/>
-                  <line x1="140" y1="0" x2="140" y2="100" stroke="#ccc" stroke-width="2"/>
-                  <line x1="0" y1="25" x2="200" y2="25" stroke="#ddd" stroke-width="1.5"/>
-                  <line x1="0" y1="75" x2="200" y2="75" stroke="#ddd" stroke-width="1.5"/>
-                  <line x1="30" y1="0" x2="50" y2="100" stroke="#ddd" stroke-width="1.5"/>
-                  <line x1="160" y1="0" x2="180" y2="100" stroke="#ddd" stroke-width="1.5"/>
-                  <!-- Pins -->
-                  <text x="78" y="30" text-anchor="middle" font-size="14">📍</text>
-                  <text x="138" y="55" text-anchor="middle" font-size="14">📍</text>
-                  <text x="50" y="72" text-anchor="middle" font-size="12">📍</text>
-                  <text x="165" y="28" text-anchor="middle" font-size="11">📍</text>
-                </svg>
-              </div>
-            </div>
-
-            <!-- Total Hours -->
             <div class="card" style="text-align:center;display:flex;flex-direction:column;justify-content:center;">
-              <div class="stat-label">⏱ Total Hours Studied</div>
-              <div class="stat-big" id="total-hours">847</div>
+              <div class="stat-label">⏱ Total Hours</div>
+              <div class="stat-big">847</div>
               <div class="stat-sub">THAT'S 35.3 DAYS! 🎉</div>
             </div>
-
-            <!-- Extra stat -->
-            <div class="card" style="text-align:center;display:flex;flex-direction:column;justify-content:center;">
-              <div class="stat-label">🔥 Current Streak</div>
-              <div class="stat-big">14</div>
-              <div class="stat-sub">DAYS IN A ROW!</div>
-            </div>
           </div>
+
+          <!-- Study Patterns -->
+          <div class="card">
+            <span class="card-title">🕰 Study Patterns</span>
+            <div class="pat-row"><span class="pat-icon">⏰</span><span class="pat-lbl">Peak time</span><span class="pat-val">6 – 9 PM</span></div>
+            <div class="pat-row"><span class="pat-icon">⌛</span><span class="pat-lbl">Avg session</span><span class="pat-val">2.4 hrs</span></div>
+            <div class="pat-row"><span class="pat-icon">📅</span><span class="pat-lbl">Best day</span><span class="pat-val">Friday</span></div>
+            <div class="pat-row"><span class="pat-icon">📍</span><span class="pat-lbl">Favourite spot</span><span class="pat-val">Central Library</span></div>
+            <div class="pat-row"><span class="pat-icon">🔁</span><span class="pat-lbl">Total sessions</span><span class="pat-val">184</span></div>
+          </div>
+
         </div>
 
-        <!-- Leaderboard -->
-        <div class="card" style="height:fit-content;">
-          <span class="card-title">🏆 Leaderboard</span>
-          <div id="leaderboard">
-            <div class="lb-row">
-              <div class="lb-rank">🥇</div>
-              <div class="lb-avatar">😎</div>
-              <div class="lb-name">Alex K.</div>
-              <div class="lb-pts">100</div>
-            </div>
-            <div class="lb-row">
-              <div class="lb-rank">🥈</div>
-              <div class="lb-avatar">🦊</div>
-              <div class="lb-name">Sam T.</div>
-              <div class="lb-pts">80</div>
-            </div>
-            <div class="lb-row">
-              <div class="lb-rank">🥉</div>
-              <div class="lb-avatar">🐱</div>
-              <div class="lb-name">Jordan M.</div>
-              <div class="lb-pts">50</div>
-            </div>
-            <div class="lb-row">
-              <div class="lb-rank" style="color:#888">4</div>
-              <div class="lb-avatar">🐸</div>
-              <div class="lb-name">Riley B.</div>
-              <div class="lb-pts" style="color:#888">38</div>
-            </div>
-            <div class="lb-row" style="background:var(--sky-light);border-radius:12px;">
-              <div class="lb-rank" style="color:#888">5</div>
-              <div class="lb-avatar">⭐</div>
-              <div class="lb-name" style="color:var(--blue-dark)">You</div>
-              <div class="lb-pts">25</div>
-            </div>
-          </div>
-          <div class="lb-title">LEADERBOARD</div>
+        <!-- Right sidebar -->
+        <div style="display:flex;flex-direction:column;gap:14px;">
 
-          <div style="margin-top:16px;padding-top:14px;border-top:2px solid var(--sky);">
-            <div class="stat-label" style="text-align:center">🎯 Weekly Goal</div>
-            <div style="background:var(--sky-light);border-radius:10px;height:14px;margin:8px 0;overflow:hidden;">
+          <!-- Weekly Goal -->
+          <div class="card">
+            <span class="card-title">🎯 Weekly Goal</span>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+              <div style="position:relative;width:72px;height:72px;flex-shrink:0;">
+                <svg width="72" height="72" viewBox="0 0 72 72" style="transform:rotate(-90deg)">
+                  <circle cx="36" cy="36" r="28" fill="none" stroke="#ddeef7" stroke-width="9"/>
+                  <circle cx="36" cy="36" r="28" fill="none" stroke="#4a9fd4" stroke-width="9"
+                    stroke-dasharray="175.9" stroke-dashoffset="66.8" stroke-linecap="round"/>
+                </svg>
+                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:1rem;color:var(--blue-dark)">62%</div>
+              </div>
+              <div>
+                <div style="font-weight:800;font-size:0.9rem;color:var(--navy)">12.4 / 20 hrs</div>
+                <div style="font-size:0.68rem;color:#888;font-weight:700;margin-top:2px;">this week</div>
+                <div style="font-size:0.72rem;color:var(--blue);font-weight:800;margin-top:5px;">7.6 hrs to go!</div>
+              </div>
+            </div>
+            <div style="background:var(--sky-light);border-radius:10px;height:10px;overflow:hidden;">
               <div style="background:linear-gradient(90deg,var(--blue),var(--accent));height:100%;width:62%;border-radius:10px;transition:width 0.5s"></div>
             </div>
-            <div style="text-align:center;font-size:0.78rem;font-weight:800;color:var(--blue)">12.4 / 20 hrs this week</div>
+            <div style="display:flex;justify-content:space-between;margin-top:3px;font-size:0.62rem;font-weight:800;color:#888"><span>0</span><span>20 hrs</span></div>
           </div>
+
+          <!-- Leaderboard -->
+          <div class="card">
+            <span class="card-title">🏆 Leaderboard</span>
+            <div class="lb-row"><div class="lb-rank">🥇</div><div class="lb-avatar">🌿</div><div class="lb-name">Sophie M.</div><div class="lb-pts">2840</div></div>
+            <div class="lb-row" style="background:var(--sky-light);border-radius:12px;"><div class="lb-rank" style="color:#888">2</div><div class="lb-avatar">☕</div><div class="lb-name" style="color:var(--blue-dark)">You</div><div class="lb-pts">2840</div></div>
+            <div class="lb-row"><div class="lb-rank">🥈</div><div class="lb-avatar">📚</div><div class="lb-name">Amara K.</div><div class="lb-pts">2680</div></div>
+            <div class="lb-row"><div class="lb-rank">🥉</div><div class="lb-avatar">🌸</div><div class="lb-name">Ji-won L.</div><div class="lb-pts">2620</div></div>
+            <div class="lb-row"><div class="lb-rank" style="color:#888">4</div><div class="lb-avatar">✦</div><div class="lb-name">Priya R.</div><div class="lb-pts" style="color:#888">2480</div></div>
+          </div>
+
+          <!-- Achievements -->
+          <div class="card">
+            <span class="card-title">🎖 Achievements</span>
+            <div class="ach-grid" id="achievements"></div>
+          </div>
+
         </div>
 
       </div>
@@ -830,7 +913,7 @@ setInterval(updateClock, 10000);
 
 // ===== TIMER =====
 let timerInterval = null, timerSeconds = 0, timerRunning = false;
-let goalSeconds = 55 * 60, longestSeconds = 2*3600+48*60+23;
+let goalSeconds = 30 * 60, longestSeconds = 2*3600+48*60+23;
 
 function fmtTime(s) {
   const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
@@ -939,6 +1022,82 @@ renderCharts();
 document.querySelectorAll('input[type=range]').forEach(el => {
   el.style.setProperty('--val', el.value + '%');
 });
+
+// ===== WEEKLY BAR CHART =====
+function buildWeekly() {
+  const hrs = [1.2, 2.8, 0, 3.5, 2.1, 4.2, 3.8];
+  const dNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const colors = ['#c4a46b','#8fa68a','#e0d8c8','#c9877a','#8fa68a','#4a9fd4','#7fa8bc'];
+  const today = new Date().getDay();
+  const max = Math.max(...hrs);
+  const el = document.getElementById('weekly-chart');
+  const lb = document.getElementById('weekly-labels');
+  if (!el) return;
+  el.innerHTML = ''; lb.innerHTML = '';
+  hrs.forEach((h, i) => {
+    const col = document.createElement('div'); col.className = 'wk-col';
+    const bar = document.createElement('div');
+    bar.className = 'wk-bar' + (i === today ? ' today-bar' : '');
+    bar.style.height = max > 0 ? (h / max * 92) + '%' : '4px';
+    bar.style.background = colors[i];
+    bar.title = dNames[i] + ': ' + h + 'h';
+    bar.onclick = () => showToast(dNames[i] + ': ' + (h > 0 ? h + 'h' : 'Rest day'));
+    const hv = document.createElement('div'); hv.className = 'wk-h'; hv.textContent = h ? h + 'h' : '—';
+    col.appendChild(bar); col.appendChild(hv); el.appendChild(col);
+    const dl = document.createElement('div'); dl.style.cssText = 'flex:1;text-align:center';
+    dl.innerHTML = '<span class="wk-lbl">' + dNames[i] + '</span>';
+    lb.appendChild(dl);
+  });
+}
+buildWeekly();
+
+// ===== TOP SPOTS =====
+function buildTopSpots() {
+  const spots = [
+    {n:'Central Library', s:'Café floor · Most visited', h:312, p:100, c:'#4a9fd4', i:'🏛'},
+    {n:'Blue Bottle Coffee', s:'Window seat · Favourite', h:198, p:63, c:'#8fa68a', i:'☕'},
+    {n:'Riverside Study Hall', s:'Quiet zone', h:145, p:46, c:'#c9877a', i:'📖'},
+    {n:'Co-working Hub', s:'Open desks', h:92, p:29, c:'#c4a46b', i:'💻'},
+    {n:'Home Office', s:'Standing desk', h:62, p:20, c:'#b87d8c', i:'🏠'},
+  ];
+  const el = document.getElementById('top-spots');
+  if (!el) return;
+  el.innerHTML = spots.map((s, i) => `
+    <div class="spot-row" onclick="showToast('${s.n} — ${s.h}h total')">
+      <span class="spot-rank">${['①','②','③','④','⑤'][i]}</span>
+      <span class="spot-ico">${s.i}</span>
+      <div class="spot-info">
+        <div class="spot-name">${s.n}</div>
+        <div class="spot-sub">${s.s}</div>
+        <div class="spot-bar-w"><div class="spot-bar-f" style="width:${s.p}%;background:${s.c}"></div></div>
+      </div>
+      <span class="spot-hrs">${s.h}h</span>
+    </div>`).join('');
+}
+buildTopSpots();
+
+// ===== ACHIEVEMENTS =====
+function buildAchievements() {
+  const achs = [
+    {i:'🌅', n:'Early Bird', e:true},
+    {i:'🔥', n:'14-day Streak', e:true},
+    {i:'🏛', n:'Explorer', e:true},
+    {i:'⏱', n:'100h Club', e:true},
+    {i:'📖', n:'Deep Focus', e:true},
+    {i:'🌿', n:'Quiet Seeker', e:false},
+    {i:'☕', n:'Café Regular', e:false},
+    {i:'🌙', n:'Night Owl', e:false},
+    {i:'⭐', n:'Top 10', e:false},
+  ];
+  const el = document.getElementById('achievements');
+  if (!el) return;
+  el.innerHTML = achs.map(a => `
+    <div class="ach-item${a.e ? ' earned' : ''}" onclick="showToast('${a.n}${a.e ? ' — unlocked! 🎉' : ' — not yet'}')">
+      <span class="ai">${a.i}</span>
+      <div class="an">${a.n}</div>
+    </div>`).join('');
+}
+buildAchievements();
 </script>
 </body>
 </html>
