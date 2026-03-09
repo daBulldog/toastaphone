@@ -327,8 +327,7 @@
   .toast.show { transform: translateX(-50%) translateY(0); }
 
   /* Seat dot */
-  .seat-dot { cursor: pointer; transition: r 0.2s; }
-  .seat-dot:hover { r: 9; }
+  .table-dot { transition: fill 0.4s ease; }
 
   /* Nav bottom mobile hint */
   .bottomnav { display: none; }
@@ -620,8 +619,8 @@
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
             <span class="card-title">📍 Floor Plan</span>
             <div class="avail-legend">
-              <span><span class="avail-dot" style="background:var(--green)"></span> Available</span>
-              <span><span class="avail-dot" style="background:var(--red)"></span> Occupied</span>
+              <span><span class="avail-dot" style="background:var(--green)"></span> <span id="fp-free-count">9 available</span></span>
+              <span><span class="avail-dot" style="background:var(--red)"></span> <span id="fp-occ-count">5 occupied</span></span>
             </div>
           </div>
           <div class="floorplan-wrap">
@@ -634,75 +633,48 @@
               <!-- Bathroom area -->
               <rect x="420" y="200" width="170" height="180" fill="#eaf5fd" stroke="#bbb" stroke-width="1.5"/>
               <text x="505" y="295" text-anchor="middle" font-size="11" fill="#aaa" font-family="Nunito">Facilities</text>
-              <!-- Tables: 4-seat round tables -->
+              <!-- Tables: one status dot per table, driven by JS -->
               <!-- Row 1 -->
               <g id="table-0"><circle cx="80" cy="70" r="28" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5"/>
-                <circle class="seat-dot" cx="80" cy="45" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="80" cy="95" r="7" fill="#f47b7b" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="55" cy="70" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="105" cy="70" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle id="tdot-0" cx="80" cy="70" r="9" fill="#5fcb7a" stroke="white" stroke-width="2"/>
               </g>
               <g id="table-1"><circle cx="180" cy="70" r="28" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5"/>
-                <circle class="seat-dot" cx="180" cy="45" r="7" fill="#f47b7b" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="180" cy="95" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="155" cy="70" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="205" cy="70" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle id="tdot-1" cx="180" cy="70" r="9" fill="#5fcb7a" stroke="white" stroke-width="2"/>
               </g>
               <g id="table-2"><circle cx="280" cy="70" r="28" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5"/>
-                <circle class="seat-dot" cx="280" cy="45" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="280" cy="95" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="255" cy="70" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="305" cy="70" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle id="tdot-2" cx="280" cy="70" r="9" fill="#5fcb7a" stroke="white" stroke-width="2"/>
               </g>
               <!-- Row 2 -->
               <g id="table-3"><circle cx="80" cy="160" r="28" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5"/>
-                <circle class="seat-dot" cx="80" cy="135" r="7" fill="#f47b7b" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="80" cy="185" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="55" cy="160" r="7" fill="#f47b7b" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="105" cy="160" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle id="tdot-3" cx="80" cy="160" r="9" fill="#5fcb7a" stroke="white" stroke-width="2"/>
               </g>
               <g id="table-4"><circle cx="180" cy="160" r="28" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5"/>
-                <circle class="seat-dot" cx="180" cy="135" r="7" fill="#f47b7b" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="180" cy="185" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="155" cy="160" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="205" cy="160" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle id="tdot-4" cx="180" cy="160" r="9" fill="#5fcb7a" stroke="white" stroke-width="2"/>
               </g>
               <g id="table-5"><circle cx="280" cy="160" r="28" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5"/>
-                <circle class="seat-dot" cx="280" cy="135" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="280" cy="185" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="255" cy="160" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="305" cy="160" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle id="tdot-5" cx="280" cy="160" r="9" fill="#5fcb7a" stroke="white" stroke-width="2"/>
               </g>
               <!-- Row 3 -->
               <g id="table-6"><circle cx="80" cy="250" r="28" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5"/>
-                <circle class="seat-dot" cx="80" cy="225" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="80" cy="275" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="55" cy="250" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="105" cy="250" r="7" fill="#f47b7b" onclick="toggleSeat(this)"/>
+                <circle id="tdot-6" cx="80" cy="250" r="9" fill="#5fcb7a" stroke="white" stroke-width="2"/>
               </g>
               <g id="table-7"><circle cx="180" cy="250" r="28" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5"/>
-                <circle class="seat-dot" cx="180" cy="225" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="180" cy="275" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="155" cy="250" r="7" fill="#f47b7b" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="205" cy="250" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle id="tdot-7" cx="180" cy="250" r="9" fill="#5fcb7a" stroke="white" stroke-width="2"/>
               </g>
               <g id="table-8"><circle cx="280" cy="250" r="28" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5"/>
-                <circle class="seat-dot" cx="280" cy="225" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="280" cy="275" r="7" fill="#f47b7b" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="255" cy="250" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
-                <circle class="seat-dot" cx="305" cy="250" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+                <circle id="tdot-8" cx="280" cy="250" r="9" fill="#5fcb7a" stroke="white" stroke-width="2"/>
               </g>
-              <!-- Bar seating row -->
+              <!-- Bar seating: one dot per bar spot -->
               <rect x="40" y="340" width="50" height="30" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5" rx="4"/>
-              <circle class="seat-dot" cx="65" cy="335" r="7" fill="#f47b7b" onclick="toggleSeat(this)"/>
+              <circle id="tdot-9" cx="65" cy="355" r="9" fill="#5fcb7a" stroke="white" stroke-width="2"/>
               <rect x="120" y="340" width="50" height="30" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5" rx="4"/>
-              <circle class="seat-dot" cx="145" cy="335" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+              <circle id="tdot-10" cx="145" cy="355" r="9" fill="#5fcb7a" stroke="white" stroke-width="2"/>
               <rect x="200" y="340" width="50" height="30" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5" rx="4"/>
-              <circle class="seat-dot" cx="225" cy="335" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+              <circle id="tdot-11" cx="225" cy="355" r="9" fill="#5fcb7a" stroke="white" stroke-width="2"/>
               <rect x="280" y="340" width="50" height="30" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5" rx="4"/>
-              <circle class="seat-dot" cx="305" cy="335" r="7" fill="#f47b7b" onclick="toggleSeat(this)"/>
+              <circle id="tdot-12" cx="305" cy="355" r="9" fill="#5fcb7a" stroke="white" stroke-width="2"/>
               <rect x="360" y="340" width="50" height="30" fill="#e8f0fb" stroke="#ccc" stroke-width="1.5" rx="4"/>
-              <circle class="seat-dot" cx="385" cy="335" r="7" fill="#5fcb7a" onclick="toggleSeat(this)"/>
+              <circle id="tdot-13" cx="385" cy="355" r="9" fill="#5fcb7a" stroke="white" stroke-width="2"/>
             </svg>
           </div>
 
@@ -1114,10 +1086,11 @@ function filterLocs(q) {
 }
 
 function goToSpace(name) {
-  // Update the spaces page header to show selected location
   const loc = LOCATIONS.find(l => l.name === name);
   const titleEl = document.getElementById('spaces-location-title');
   if (titleEl && loc) titleEl.textContent = loc.icon + ' ' + loc.name;
+  // Sync floor plan dots to this location's availability
+  if (loc) updateFloorDots(loc.availPct);
   showPage('spaces');
   showToast('📍 Viewing ' + name);
 }
@@ -1171,11 +1144,15 @@ function renderCharts() {
   makeChart('cozy-chart', cozyData[currentRoom], '#1e5f8e', barIdx);
 }
 
+// Per-room availability percentages (Room 1-4)
+const roomAvailPct = [67, 85, 40, 92];
+
 function selectRoom(idx, el) {
   currentRoom = idx;
   document.querySelectorAll('.room-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
   renderCharts();
+  updateFloorDots(roomAvailPct[idx]);
   showToast('Viewing Room ' + (idx+1));
 }
 
@@ -1190,12 +1167,29 @@ function nextDay() {
   renderCharts();
 }
 
-// ===== SEAT TOGGLE =====
-function toggleSeat(el) {
-  const isGreen = el.getAttribute('fill') === '#5fcb7a';
-  el.setAttribute('fill', isGreen ? '#f47b7b' : '#5fcb7a');
-  showToast(isGreen ? 'Seat marked occupied' : 'Seat marked available');
+// ===== TABLE STATUS (read-only, driven by explore availability) =====
+// 14 spots total: 9 round tables + 5 bar seats
+// availPct from the selected location drives how many are green vs red
+const TOTAL_SPOTS = 14;
+
+function updateFloorDots(availPct) {
+  const freeCount = Math.round(TOTAL_SPOTS * availPct / 100);
+  // Shuffle a fixed seed-based order so it looks natural, not just top-to-bottom
+  const order = [0,4,8,2,6,11,3,7,12,1,5,9,10,13];
+  order.forEach((dotIdx, rank) => {
+    const dot = document.getElementById('tdot-' + dotIdx);
+    if (!dot) return;
+    dot.setAttribute('fill', rank < freeCount ? '#5fcb7a' : '#f47b7b');
+  });
+  // Update the legend counts
+  const freeEl = document.getElementById('fp-free-count');
+  const occEl  = document.getElementById('fp-occ-count');
+  if (freeEl) freeEl.textContent = freeCount + ' available';
+  if (occEl)  occEl.textContent  = (TOTAL_SPOTS - freeCount) + ' occupied';
 }
+
+// Init with the default location's availability (Central Library = 67%)
+updateFloorDots(67);
 
 // ===== LOG SLIDERS =====
 function updateSlider(el, name) {
