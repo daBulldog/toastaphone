@@ -348,6 +348,83 @@
     .main { padding-bottom: 70px; }
     .topbar .topbar-tab { display: none; }
   }
+
+  /* ===== EXPLORE PAGE ===== */
+  .explore-wrap { position: relative; width: 100%; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+  .explore-map-svg { display: block; width: 100%; height: auto; }
+
+  /* Location pin cards */
+  .pin-btn {
+    position: absolute; transform: translate(-50%, -100%);
+    cursor: pointer; transition: transform 0.2s; z-index: 10;
+    background: none; border: none; padding: 0;
+  }
+  .pin-btn:hover { transform: translate(-50%, -110%) scale(1.12); }
+  .pin-bubble {
+    background: white; border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(30,95,142,0.22);
+    padding: 7px 11px; display: flex; align-items: center; gap: 7px;
+    border: 2px solid var(--sky); white-space: nowrap; position: relative;
+  }
+  .pin-bubble::after {
+    content: ''; position: absolute; bottom: -9px; left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent; border-top-color: white;
+    filter: drop-shadow(0 2px 2px rgba(30,95,142,0.15));
+  }
+  .pin-bubble.busy { border-color: var(--red); }
+  .pin-bubble.quiet { border-color: var(--green); }
+  .pin-bubble.moderate { border-color: #f4c842; }
+  .pin-icon { font-size: 1.2rem; }
+  .pin-name { font-weight: 800; font-size: 0.75rem; color: var(--navy); line-height: 1.2; }
+  .pin-status { font-size: 0.62rem; font-weight: 700; }
+  .pin-status.busy { color: var(--red); }
+  .pin-status.quiet { color: var(--green); }
+  .pin-status.moderate { color: #c49a00; }
+
+  /* Explore filter row */
+  .explore-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .filter-chip {
+    background: white; border: 2px solid var(--sky); border-radius: 20px;
+    padding: 5px 14px; font-family: 'Nunito', sans-serif; font-weight: 800;
+    font-size: 0.75rem; color: var(--navy); cursor: pointer; transition: all 0.18s;
+  }
+  .filter-chip.active { background: var(--blue-dark); border-color: var(--blue-dark); color: white; }
+  .filter-chip:hover:not(.active) { background: var(--sky-light); }
+
+  /* Location list cards */
+  .loc-list { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+  .loc-card {
+    background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 14px 16px; display: flex; align-items: center; gap: 14px;
+    cursor: pointer; transition: all 0.2s; border: 2px solid transparent;
+    backdrop-filter: blur(8px);
+  }
+  .loc-card:hover { border-color: var(--blue); transform: translateY(-2px); }
+  .loc-card-icon { font-size: 2rem; flex-shrink: 0; }
+  .loc-card-info { flex: 1; min-width: 0; }
+  .loc-card-name { font-family: 'Fredoka One', cursive; font-size: 1.05rem; color: var(--navy); }
+  .loc-card-addr { font-size: 0.72rem; color: #888; font-weight: 700; margin-top: 1px; }
+  .loc-card-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 6px; }
+  .loc-tag { font-size: 0.6rem; font-weight: 800; border-radius: 20px; padding: 2px 8px; background: var(--sky-light); color: var(--blue-dark); }
+  .loc-card-right { text-align: right; flex-shrink: 0; }
+  .loc-avail { font-family: 'Fredoka One', cursive; font-size: 1.3rem; }
+  .loc-avail.good { color: var(--green); }
+  .loc-avail.ok   { color: #f4c842; }
+  .loc-avail.full { color: var(--red); }
+  .loc-dist { font-size: 0.65rem; font-weight: 800; color: #888; margin-top: 2px; }
+  .loc-open { font-size: 0.62rem; font-weight: 800; color: var(--green); }
+
+  /* Explore top bar */
+  .explore-toprow { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .explore-search {
+    flex: 1; padding: 9px 16px; border-radius: 30px;
+    border: 2px solid var(--sky); font-family: 'Nunito', sans-serif;
+    font-size: 0.85rem; font-weight: 700; color: var(--navy);
+    background: white; outline: none;
+  }
+  .explore-search:focus { border-color: var(--blue); }
+
 </style>
 </head>
 <body>
@@ -356,10 +433,11 @@
   <div class="topbar">
     <div class="topbar-title">📚 StudySpot</div>
     <div class="topbar-right">
-      <button class="topbar-tab active" onclick="showPage('map')">MAP</button>
+      <button class="topbar-tab active" onclick="showPage('explore')">EXPLORE</button>
+      <button class="topbar-tab" onclick="showPage('spaces')">SPACES</button>
       <button class="topbar-tab" onclick="showPage('log')">LOG</button>
       <button class="topbar-tab" onclick="showPage('stats')">STATS</button>
-      <button class="home-btn" onclick="showPage('map')" title="Home">
+      <button class="home-btn" onclick="showPage('explore')" title="Home">
         <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
       </button>
     </div>
@@ -368,7 +446,173 @@
   <div class="main">
 
     <!-- ===== MAP PAGE ===== -->
-    <div class="page active" id="page-map">
+    <!-- ===== EXPLORE PAGE ===== -->
+    <div class="page active" id="page-explore">
+
+      <div class="explore-toprow">
+        <input class="explore-search" type="text" placeholder="🔍  Search study spots…" oninput="filterLocs(this.value)">
+      </div>
+
+      <div class="explore-filters">
+        <button class="filter-chip active" onclick="setFilter('all',this)">All</button>
+        <button class="filter-chip" onclick="setFilter('cafe',this)">☕ Cafés</button>
+        <button class="filter-chip" onclick="setFilter('library',this)">📚 Libraries</button>
+        <button class="filter-chip" onclick="setFilter('cowork',this)">💻 Co-working</button>
+        <button class="filter-chip" onclick="setFilter('quiet',this)">🤫 Quiet</button>
+      </div>
+
+      <!-- SVG illustrated city map -->
+      <div class="card" style="padding:0;overflow:hidden;position:relative;">
+        <div class="explore-wrap">
+          <svg viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:auto;background:#e8f4f9">
+
+            <!-- ── BACKGROUND: water & park ── -->
+            <rect width="800" height="460" fill="#dceef7"/>
+            <!-- river -->
+            <path d="M0 340 Q200 310 400 330 Q600 350 800 320 L800 460 L0 460Z" fill="#b8dff7" opacity="0.7"/>
+            <path d="M0 350 Q200 320 400 340 Q600 360 800 330" fill="none" stroke="#a0cceb" stroke-width="2"/>
+            <!-- park area -->
+            <ellipse cx="640" cy="160" rx="90" ry="65" fill="#c8e6c0" opacity="0.8"/>
+            <ellipse cx="640" cy="160" rx="75" ry="50" fill="#b4dba8" opacity="0.6"/>
+            <text x="640" y="155" text-anchor="middle" font-size="11" fill="#5a8a50" font-weight="700" font-family="Nunito">🌳 City Park</text>
+            <!-- small park top-left -->
+            <ellipse cx="80" cy="80" rx="50" ry="35" fill="#c8e6c0" opacity="0.7"/>
+            <text x="80" y="83" text-anchor="middle" font-size="9" fill="#5a8a50" font-weight="700" font-family="Nunito">🌿 Green</text>
+
+            <!-- ── ROADS ── -->
+            <!-- Main horizontal roads -->
+            <rect x="0" y="195" width="800" height="20" fill="#d8e8f0" rx="0"/>
+            <line x1="0" y1="205" x2="800" y2="205" stroke="white" stroke-width="1.5" stroke-dasharray="20,12"/>
+            <rect x="0" y="295" width="800" height="16" fill="#d8e8f0"/>
+            <line x1="0" y1="303" x2="800" y2="303" stroke="white" stroke-width="1" stroke-dasharray="16,10"/>
+            <rect x="0" y="120" width="800" height="14" fill="#d8e8f0" opacity="0.8"/>
+            <!-- Main vertical roads -->
+            <rect x="195" y="0" width="20" height="460" fill="#d8e8f0"/>
+            <line x1="205" y1="0" x2="205" y2="460" stroke="white" stroke-width="1.5" stroke-dasharray="20,12"/>
+            <rect x="430" y="0" width="18" height="460" fill="#d8e8f0"/>
+            <line x1="439" y1="0" x2="439" y2="460" stroke="white" stroke-width="1" stroke-dasharray="16,10"/>
+            <rect x="620" y="0" width="14" height="320" fill="#d8e8f0" opacity="0.8"/>
+            <!-- Minor roads -->
+            <rect x="320" y="0" width="10" height="195" fill="#dce8f0" opacity="0.7"/>
+            <rect x="530" y="215" width="10" height="240" fill="#dce8f0" opacity="0.7"/>
+            <rect x="100" y="215" width="10" height="130" fill="#dce8f0" opacity="0.7"/>
+            <rect x="0" y="255" width="430" height="10" fill="#dce8f0" opacity="0.7"/>
+
+            <!-- Road labels -->
+            <text x="400" y="192" text-anchor="middle" font-size="8.5" fill="#8aabbc" font-weight="700" font-family="Nunito">MAIN ST</text>
+            <text x="400" y="290" text-anchor="middle" font-size="8" fill="#8aabbc" font-weight="700" font-family="Nunito">RIVER RD</text>
+            <text x="202" y="100" text-anchor="middle" font-size="8" fill="#8aabbc" font-weight="700" font-family="Nunito" transform="rotate(-90,202,100)">CENTRAL AVE</text>
+            <text x="436" y="100" text-anchor="middle" font-size="8" fill="#8aabbc" font-weight="700" font-family="Nunito" transform="rotate(-90,436,100)">ELM ST</text>
+
+            <!-- ── CITY BLOCKS (buildings) ── -->
+            <!-- Block 1: top-left -->
+            <rect x="25" y="140" width="60" height="50" fill="#cfe0ed" rx="4" stroke="#b8ccdc" stroke-width="1"/>
+            <rect x="95" y="148" width="45" height="42" fill="#d4e6f2" rx="3" stroke="#b8ccdc" stroke-width="1"/>
+            <rect x="25" y="30" width="80" height="82" fill="#d0dce8" rx="4" stroke="#b8ccdc" stroke-width="1"/>
+            <rect x="115" y="50" width="55" height="62" fill="#cad8e8" rx="3" stroke="#b8ccdc" stroke-width="1"/>
+            <!-- Block 2: top-center -->
+            <rect x="226" y="30" width="55" height="70" fill="#d0dce8" rx="4" stroke="#b8ccdc" stroke-width="1"/>
+            <rect x="291" y="40" width="20" height="72" fill="#cfe0ed" rx="3" stroke="#b8ccdc" stroke-width="1"/>
+            <rect x="226" y="108" width="90" height="78" fill="#d4e6f2" rx="4" stroke="#b8ccdc" stroke-width="1"/>
+            <!-- Block 3: center -->
+            <rect x="460" y="30" width="70" height="80" fill="#cad8e8" rx="4" stroke="#b8ccdc" stroke-width="1"/>
+            <rect x="540" y="45" width="40" height="65" fill="#d0dce8" rx="3" stroke="#b8ccdc" stroke-width="1"/>
+            <rect x="460" y="118" width="55" height="68" fill="#cfe0ed" rx="3" stroke="#b8ccdc" stroke-width="1"/>
+            <!-- Block 4: below main st -->
+            <rect x="25" y="225" width="65" height="55" fill="#d4e6f2" rx="4" stroke="#b8ccdc" stroke-width="1"/>
+            <rect x="100" y="225" width="85" height="55" fill="#cfe0ed" rx="4" stroke="#b8ccdc" stroke-width="1"/>
+            <rect x="226" y="225" width="60" height="60" fill="#d0dce8" rx="4" stroke="#b8ccdc" stroke-width="1"/>
+            <rect x="296" y="225" width="35" height="60" fill="#cad8e8" rx="3" stroke="#b8ccdc" stroke-width="1"/>
+            <rect x="460" y="225" width="60" height="55" fill="#cfe0ed" rx="4" stroke="#b8ccdc" stroke-width="1"/>
+            <rect x="530" y="225" width="40" height="55" fill="#d4e6f2" rx="3" stroke="#b8ccdc" stroke-width="1"/>
+            <!-- Block 5: bottom row -->
+            <rect x="25" y="315" width="170" height="36" fill="#cad8e8" rx="3" stroke="#b8ccdc" stroke-width="1"/>
+            <rect x="226" y="315" width="90" height="36" fill="#d0dce8" rx="3" stroke="#b8ccdc" stroke-width="1"/>
+            <rect x="460" y="315" width="80" height="36" fill="#cfe0ed" rx="3" stroke="#b8ccdc" stroke-width="1"/>
+
+            <!-- ── COMPASS ── -->
+            <circle cx="752" cy="52" r="22" fill="white" opacity="0.85" stroke="#b8ccdc" stroke-width="1.5"/>
+            <text x="752" y="46" text-anchor="middle" font-size="11" fill="#1a3a5c" font-weight="800" font-family="Nunito">N</text>
+            <text x="752" y="64" text-anchor="middle" font-size="8" fill="#8aabbc" font-weight="700" font-family="Nunito">S</text>
+            <text x="740" y="56" text-anchor="middle" font-size="8" fill="#8aabbc" font-weight="700" font-family="Nunito">W</text>
+            <text x="764" y="56" text-anchor="middle" font-size="8" fill="#8aabbc" font-weight="700" font-family="Nunito">E</text>
+            <line x1="752" y1="34" x2="752" y2="42" stroke="#1a3a5c" stroke-width="2"/>
+
+            <!-- ── "YOU ARE HERE" dot ── -->
+            <circle cx="205" cy="205" r="9" fill="#f47b7b" opacity="0.3"/>
+            <circle cx="205" cy="205" r="5" fill="#f47b7b"/>
+            <circle cx="205" cy="205" r="3" fill="white"/>
+          </svg>
+
+          <!-- ── LOCATION PINS (absolutely positioned over SVG) ── -->
+          <!-- Central Library: ~26% x, 44% y of 800x460 -->
+          <button class="pin-btn" style="left:26%;top:44%" onclick="goToSpace('Central Library')">
+            <div class="pin-bubble quiet">
+              <span class="pin-icon">🏛</span>
+              <div>
+                <div class="pin-name">Central Library</div>
+                <div class="pin-status quiet">● 18 seats free</div>
+              </div>
+            </div>
+          </button>
+
+          <!-- Blue Bottle Café: ~57% x, 28% y -->
+          <button class="pin-btn" style="left:57%;top:28%" onclick="goToSpace('Blue Bottle Café')">
+            <div class="pin-bubble moderate">
+              <span class="pin-icon">☕</span>
+              <div>
+                <div class="pin-name">Blue Bottle Café</div>
+                <div class="pin-status moderate">● Moderate</div>
+              </div>
+            </div>
+          </button>
+
+          <!-- Riverside Study Hall: ~57% x, 66% y -->
+          <button class="pin-btn" style="left:57%;top:66%" onclick="goToSpace('Riverside Study Hall')">
+            <div class="pin-bubble quiet">
+              <span class="pin-icon">📖</span>
+              <div>
+                <div class="pin-name">Riverside Hall</div>
+                <div class="pin-status quiet">● Very quiet</div>
+              </div>
+            </div>
+          </button>
+
+          <!-- The Loft Co-working: ~34% x, 60% y -->
+          <button class="pin-btn" style="left:34%;top:60%" onclick="goToSpace('The Loft Co-working')">
+            <div class="pin-bubble busy">
+              <span class="pin-icon">💻</span>
+              <div>
+                <div class="pin-name">The Loft</div>
+                <div class="pin-status busy">● Nearly full</div>
+              </div>
+            </div>
+          </button>
+
+          <!-- Bean & Books: ~14% x, 30% y -->
+          <button class="pin-btn" style="left:14%;top:30%" onclick="goToSpace('Bean & Books')">
+            <div class="pin-bubble quiet">
+              <span class="pin-icon">🫘</span>
+              <div>
+                <div class="pin-name">Bean & Books</div>
+                <div class="pin-status quiet">● Calm today</div>
+              </div>
+            </div>
+          </button>
+
+        </div><!-- /explore-wrap -->
+      </div><!-- /card -->
+
+      <!-- Location list -->
+      <div class="loc-list" id="loc-list"></div>
+
+    </div><!-- /page-explore -->
+
+    <div class="page" id="page-spaces">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <button onclick="showPage('explore')" style="background:var(--sky-light);border:2px solid var(--sky);border-radius:20px;padding:5px 14px;font-family:Nunito,sans-serif;font-weight:800;font-size:0.78rem;color:var(--navy);cursor:pointer;">&#8592; Map</button>
+        <span id="spaces-location-title" style="font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--navy);">&#127963; Central Library</span>
+      </div>
       <div class="map-grid">
 
         <!-- Left: Floor Plan -->
@@ -780,9 +1024,13 @@
 
   <!-- Bottom Nav (mobile) -->
   <div class="bottomnav">
-    <div class="bottomnav-btn active" id="bnav-map" onclick="showPage('map')">
+    <div class="bottomnav-btn active" id="bnav-explore" onclick="showPage('explore')">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-4l6-4-6-4v8z"/></svg>
+      EXPLORE
+    </div>
+    <div class="bottomnav-btn" id="bnav-spaces" onclick="showPage('spaces')">
       <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-      MAP
+      SPACES
     </div>
     <div class="bottomnav-btn" id="bnav-log" onclick="showPage('log')">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4" fill="white"/></svg>
@@ -806,11 +1054,75 @@ function showPage(name) {
   document.querySelectorAll('.bottomnav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
   const tabs = [...document.querySelectorAll('.topbar-tab')];
-  const map = {map:0,log:1,stats:2};
+  const map = {explore:0,spaces:1,log:2,stats:3};
   if (tabs[map[name]]) tabs[map[name]].classList.add('active');
   const bn = document.getElementById('bnav-' + name);
   if (bn) bn.classList.add('active');
 }
+
+// ===== EXPLORE =====
+const LOCATIONS = [
+  { id:'central-library', name:'Central Library',   addr:'12 Central Ave',        icon:'🏛', type:'library', avail:'good',  availPct:67, seats:'18 free',  dist:'0.2 mi', open:'Open until 10 PM', tags:['Quiet zones','Fast Wi-Fi','Printing','Accessible'] },
+  { id:'blue-bottle',     name:'Blue Bottle Café',  addr:'45 Elm St',             icon:'☕', type:'cafe',    avail:'ok',    availPct:40, seats:'8 free',   dist:'0.5 mi', open:'Open until 9 PM',  tags:['Cosy','Outlets','Great coffee'] },
+  { id:'riverside-hall',  name:'Riverside Study Hall', addr:'1 River Rd',         icon:'📖', type:'library', avail:'good',  availPct:80, seats:'24 free',  dist:'0.7 mi', open:'Open until 11 PM', tags:['Silent floor','Big desks','AC'] },
+  { id:'the-loft',        name:'The Loft Co-working', addr:'88 Main St',          icon:'💻', type:'cowork',  avail:'full',  availPct:12, seats:'2 free',   dist:'0.3 mi', open:'Open 24/7',        tags:['Standing desks','Fast Wi-Fi','Phone booths'] },
+  { id:'bean-books',      name:'Bean & Books',      addr:'7 Green Lane',          icon:'🫘', type:'cafe',    avail:'good',  availPct:75, seats:'12 free',  dist:'0.4 mi', open:'Open until 8 PM',  tags:['Cosy','Books','Plants','Quiet'] },
+];
+
+let activeFilter = 'all';
+let searchQuery = '';
+
+function buildLocList() {
+  const el = document.getElementById('loc-list');
+  if (!el) return;
+  let filtered = LOCATIONS.filter(l => {
+    const matchFilter = activeFilter === 'all'
+      || (activeFilter === 'cafe'    && l.type === 'cafe')
+      || (activeFilter === 'library' && l.type === 'library')
+      || (activeFilter === 'cowork'  && l.type === 'cowork')
+      || (activeFilter === 'quiet'   && (l.type === 'library' || l.avail === 'good'));
+    const matchSearch = !searchQuery || l.name.toLowerCase().includes(searchQuery.toLowerCase()) || l.addr.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchFilter && matchSearch;
+  });
+  const availLabel = { good:'🟢', ok:'🟡', full:'🔴' };
+  el.innerHTML = filtered.map(l => `
+    <div class="loc-card" onclick="goToSpace('${l.name}')">
+      <div class="loc-card-icon">${l.icon}</div>
+      <div class="loc-card-info">
+        <div class="loc-card-name">${l.name}</div>
+        <div class="loc-card-addr">📌 ${l.addr}</div>
+        <div class="loc-card-tags">${l.tags.map(t => '<span class="loc-tag">' + t + '</span>').join('')}</div>
+      </div>
+      <div class="loc-card-right">
+        <div class="loc-avail ${l.avail}">${availLabel[l.avail]} ${l.seats}</div>
+        <div class="loc-dist">${l.dist} away</div>
+        <div class="loc-open">${l.open}</div>
+      </div>
+    </div>`).join('') || '<div style="text-align:center;padding:24px;color:#aaa;font-weight:800;">No spots found 🔍</div>';
+}
+
+function setFilter(f, el) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  buildLocList();
+}
+
+function filterLocs(q) {
+  searchQuery = q;
+  buildLocList();
+}
+
+function goToSpace(name) {
+  // Update the spaces page header to show selected location
+  const loc = LOCATIONS.find(l => l.name === name);
+  const titleEl = document.getElementById('spaces-location-title');
+  if (titleEl && loc) titleEl.textContent = loc.icon + ' ' + loc.name;
+  showPage('spaces');
+  showToast('📍 Viewing ' + name);
+}
+
+buildLocList();
 
 // ===== CHARTS =====
 function makeChart(id, data, color='#4a9fd4', highlight=null) {
